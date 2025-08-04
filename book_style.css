@@ -1,0 +1,226 @@
+/* ==================
+    Book Page Styles
+    ================== */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f4f7f6; /* A slightly softer background color */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-family: 'DM Serif Text', serif;
+    margin-bottom: 10px;
+}
+
+.page-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+/* =================================
+    NEW HEADER STYLES (OVERRIDE)
+==================================== */
+
+/* Resets any previous header style */
+header {
+    background-color: #fff !important;
+    padding: 15px 0 !important;
+    text-align: left !important; /* Overrides previous text-align: center */
+    border-bottom: 1px solid #e9ecef;
+    position: sticky !important;
+    top: 0;
+    z-index: 1000;
+    color: #212529 !important; /* Resets text color for the container */
+}
+
+/* Flexbox container for alignment */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header h1 a {
+    text-decoration: none;
+    color: #212529;
+    font-family: 'DM Serif Text', serif;
+    font-size: 1.75rem;
+}
+
+/* Resets any previous nav list style */
+header nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Base style for ALL nav links, overriding previous ones */
+header nav a {
+    display: block;
+    padding: 8px 16px !important;
+    text-decoration: none !important;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 6px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Style for INACTIVE links */
+header nav a:not(.active) {
+    background-color: transparent !important;
+    color: #333 !important;
+}
+
+header nav a:not(.active):hover {
+    color: #0d6efd !important; /* Change text color on hover */
+}
+
+/* Style for the ACTIVE link (the blue button) */
+header nav a.active {
+    background-color: #0d6efd !important;
+    color: #fff !important;
+}
+
+/* --- Search Bar --- */
+.search-container {
+    position: relative;
+    margin: 0 auto 40px auto;
+    max-width: 600px;
+}
+#searchInput {
+    width: 100%;
+    padding: 15px 20px 15px 50px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#searchInput:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 4px 12px rgba(0, 86, 179, 0.15);
+}
+.search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+/* ==================================================
+   UPDATED Subject Cards UI (Square Design)
+   ================================================== */
+
+#booksGrid {
+    display: grid;
+    /* Responsive grid that fits items with a minimum width of 200px */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style for the container of each subject item */
+.subject-item-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style for the clickable subject card */
+.subject-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    border: 2px solid #ddd; /* Light grey border */
+    border-radius: 8px; /* Slightly rounded corners */
+    text-decoration: none;
+    color: #333;
+    width: 180px;
+    height: 180px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.subject-card:hover {
+    transform: scale(1.05); /* Enlarge on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Add a shadow on hover */
+}
+
+/* Style for the icon wrapper (the filled box) */
+.subject-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px; /* Rounded corners for the icon box */
+    margin-bottom: 15px; /* Space between icon box and text */
+    color: #fff; /* Icon color is white */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* The icon inside the box */
+.subject-icon {
+    font-size: 2.4rem;
+    /* NEW: Add transition for smooth rotation */
+    transition: transform 0.4s ease-in-out;
+}
+
+/* NEW: Rule to rotate the icon when the card is hovered */
+.subject-card:hover .subject-icon {
+    transform: rotate(360deg);
+}
+
+
+/* The subject name text below the card */
+.subject-name {
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 5px;
+    color: #34495e; /* A professional dark blue */
+    line-height: 1.3;
+}
+
+/* --- Solid Color Palette for Icon Backgrounds --- */
+.color-bg-1 { background-color: #007bff; } /* Blue */
+.color-bg-2 { background-color: #28a745; } /* Green */
+.color-bg-3 { background-color: #ffc107; color: #333; } /* Yellow (with dark text) */
+.color-bg-4 { background-color: #dc3545; } /* Red */
+.color-bg-5 { background-color: #6f42c1; } /* Purple */
+
+
+.no-results-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #888;
+    padding: 40px;
+    /* Make it span all columns if the grid is active */
+    grid-column: 1 / -1;
+}
