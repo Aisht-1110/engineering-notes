@@ -3,165 +3,273 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Civil Engineering Subjects</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Mechanical Engineering Subjects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Open Sans', Arial, sans-serif; background: #f7f7f9; }
-    .subject-container {
-      max-width: 580px; background: #fff; border-radius: 12px;
-      margin: 40px auto 0 auto; box-shadow: 0 2px 12px rgba(44,62,80,0.08);
-      padding: 40px 32px 32px 32px;
-    }
-    h1 { text-align: center; margin-bottom: 30px; font-family: 'DM Serif Text', serif; }
-    ul { padding: 0; list-style: none; }
-    li {
-      margin: 15px 0;
-      background: #f2f3f6;
-      padding: 14px 18px;
-      border-radius: 7px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    li a.subject-link {
-      text-decoration: none;
-      color: #2676c7;
-      font-weight: 500;
-      cursor: pointer;
-      flex-grow: 1;
-    }
-    li a.subject-link:hover {
-      color: #20507c;
-      text-decoration: underline;
-    }
-    li a.download-link {
-      margin-left: 15px;
-      color: #4a90e2;
-      font-weight: 400;
-      font-size: 0.9em;
-    }
-    li a.download-link:hover {
-      color: #20507c;
-      text-decoration: underline;
-    }
-    .back-link {
-      display: block;
-      margin-bottom: 15px;
-      color: #666;
-      text-decoration: none;
-      font-size: 1em;
-    }
-    .back-link:hover {
-      color: #104477;
+    /* CSS Variables for easy theme management */
+    :root {
+      --primary-color: #2676c7;
+      --primary-hover-color: #1a5a96;
+      --background-color: #f7f7f9;
+      --card-background: #ffffff;
+      --text-color: #2c3e50;
+      --subtle-text-color: #7f8c8d;
+      --border-color: #e0e0e0;
+      --card-accent-color: #4a90e2;
     }
 
-    /* Modal styles (kept for consistency, though not used by default in this specific list) */
-    #pdfPortal {
-      display: none;
-      position: fixed;
-      top: 10%;
-      left: 10%;
-      width: 80%;
-      height: 80%;
-      background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      z-index: 1000;
-      border-radius: 8px;
-      flex-direction: column;
-      overflow: hidden;
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
     }
-    #pdfPortal header {
-      padding: 10px;
-      background: #007bff;
-      color: white;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-radius: 8px 8px 0 0;
+
+    .subject-container {
+      max-width: 680px;
+      margin: 40px auto;
+      padding: 40px;
+      background: var(--card-background);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(44, 62, 80, 0.08);
     }
-    #pdfPortal iframe {
+
+    h1 {
+      text-align: center;
+      margin-bottom: 35px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5em;
+      color: var(--text-color);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 25px;
+      color: var(--subtle-text-color);
+      text-decoration: none;
+      font-size: 0.9em;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: var(--primary-color);
+    }
+
+    /* --- Search Bar Styles --- */
+    .search-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    #search-box {
       width: 100%;
-      height: calc(100% - 42px); /* header height approx 42px */
-      border: none;
-      border-radius: 0 0 8px 8px;
+      padding: 12px 15px 12px 45px; /* Make space for icon */
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      box-sizing: border-box; /* Important for padding and width */
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    #pdfOverlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
+    #search-box:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
     }
-    #pdfPortal button.close-btn {
-      cursor: pointer;
-      background: #fff;
-      border: none;
-      font-size: 18px;
-      line-height: 1;
-      padding: 0 8px;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
+    
+    .search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        fill: var(--subtle-text-color);
     }
-    #pdfPortal button.close-btn:hover {
-      background-color: #ddd;
+
+    /* --- Subject List Styles --- */
+    #subject-list {
+      padding: 0;
+      list-style: none;
+      margin: 0;
     }
+
+    .subject-item {
+      margin-bottom: 12px;
+      background: var(--card-background);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--card-accent-color);
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    }
+    .subject-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 12px rgba(44, 62, 80, 0.12);
+    }
+    
+    .subject-item a {
+      display: flex;
+      align-items: center;
+      padding: 18px 20px;
+      text-decoration: none;
+      color: var(--text-color);
+    }
+
+    .subject-code {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-right: 15px;
+      min-width: 80px; /* Aligns the names */
+    }
+    
+    .subject-name {
+      font-weight: 500;
+      flex-grow: 1; /* Takes up remaining space */
+    }
+    
+    .subject-item a:hover .subject-name {
+      color: var(--primary-hover-color);
+    }
+
+    #no-results {
+        text-align: center;
+        padding: 20px;
+        color: var(--subtle-text-color);
+        display: none; /* Hidden by default */
+    }
+
   </style>
 </head>
 <body>
+
   <div class="subject-container">
     <a href="index.html" class="back-link">&larr; Back to Departments</a>
-    <h1>Basic Subjects of Civil Engineering</h1>
-    <ul>
-      <li style="background-color: #dbea7d;">
-        <a href="https://drive.google.com/drive/folders/YOUR_CIVIL_ENGINEERING_BOOKS_FOLDER_LINK" class="subject-link" target="_blank">CIVIL ENGINEERING BOOKS</a>
+    <h1>Mechanical Engineering Subjects</h1>
+
+    <div class="search-container">
+      <svg class="search-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+      <input type="search" id="search-box" placeholder="Search by name or code (e.g., 'Fluid' or 'ME202')...">
+    </div>
+
+    <ul id="subject-list">
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/1eFbTnyTf6WDMnn1oDZjKrgz7oIQOAp3z" target="_blank">
+          <span class="subject-code">ME201</span>
+          <span class="subject-name">Thermodynamics</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_ENGINEERING_MECHANICS_FOLDER_LINK" class="subject-link" target="_blank">Engineering Mechanics / Applied Mechanics</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/1KTcaEKgPvQi5nZMcYqTBcHiUYqTogGRz" target="_blank">
+          <span class="subject-code">ME202</span>
+          <span class="subject-name">Fluid Mechanics</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_STRENGTH_OF_MATERIALS_FOLDER_LINK" class="subject-link" target="_blank">Strength of Materials (Solid Mechanics)</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/1lRCn-Jct8-XC4Vkl33x_PmdP-RWgLulL" target="_blank">
+          <span class="subject-code">ME203</span>
+          <span class="subject-name">Engineering Mechanics</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_FLUID_MECHANICS_FOLDER_LINK" class="subject-link" target="_blank">Fluid Mechanics</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/1XODVZYZrmeLPVcwWBDjuhSj_zMMFYFXD" target="_blank">
+          <span class="subject-code">ME204</span>
+          <span class="subject-name">Dynamics of Machinery</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_SURVEYING_FOLDER_LINK" class="subject-link" target="_blank">Surveying</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/15IeBiffYgo-ThT4kjWGK607OpFxCs9JQ" target="_blank">
+          <span class="subject-code">ME205</span>
+          <span class="subject-name">Manufacturing Technology</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_BUILDING_MATERIALS_CONSTRUCTION_FOLDER_LINK" class="subject-link" target="_blank">Building Materials and Construction</a>
+       <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/1EFVq4j8AnAMewVylrk_6p5W_2Ii0jymW" target="_blank">
+          <span class="subject-code">ME301</span>
+          <span class="subject-name">Design of Machine Elements</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_STRUCTURAL_ANALYSIS_FOLDER_LINK" class="subject-link" target="_blank">Structural Analysis</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/1EiDPO4DTogGhm6kOMqNJUA22x4DBCjXU" target="_blank">
+          <span class="subject-code">ME302</span>
+          <span class="subject-name">Heat and Mass Transfer</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_CONCRETE_TECHNOLOGY_FOLDER_LINK" class="subject-link" target="_blank">Concrete Technology</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/1e592955kqFpRFwq_YZLPnbYrF48OTu4u" target="_blank">
+          <span class="subject-code">ME303</span>
+          <span class="subject-name">Metrology and Quality Control</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_GEOTECHNICAL_ENGINEERING_FOLDER_LINK" class="subject-link" target="_blank">Geotechnical Engineering (Soil Mechanics & Foundation Engineering)</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/138g-PRNui9Jsd5gym_VmiKeHDiRH2ySS" target="_blank">
+          <span class="subject-code">MA101</span>
+          <span class="subject-name">Engineering Mathematics - I</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_TRANSPORTATION_ENGINEERING_FOLDER_LINK" class="subject-link" target="_blank">Transportation Engineering</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/1QwFTeeSo2Qll3o48FrwCyhGgtC9m8qM1" target="_blank">
+          <span class="subject-code">MA102</span>
+          <span class="subject-name">Engineering Mathematics - II</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_ENVIRONMENTAL_ENGINEERING_FOLDER_LINK" class="subject-link" target="_blank">Environmental Engineering</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/11BMll3D2tnO0VU84UXKP-lyiRaarokzl" target="_blank">
+          <span class="subject-code">MA201</span>
+          <span class="subject-name">Engineering Mathematics - III</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_WATER_RESOURCES_ENGINEERING_FOLDER_LINK" class="subject-link" target="_blank">Water Resources Engineering (Hydrology & Irrigation)</a>
+      <li class="subject-item">
+        <a href="https://drive.google.com/drive/folders/15o_eEztHg5bW0mIzJKGH07pwIrkzAPRz?usp=drive_link" target="_blank">
+          <span class="subject-code">CS101</span>
+          <span class="subject-name">Python Programming Notes</span>
+        </a>
       </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_DESIGN_RC_STRUCTURES_FOLDER_LINK" class="subject-link" target="_blank">Design of Reinforced Concrete Structures</a>
-      </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_DESIGN_STEEL_STRUCTURES_FOLDER_LINK" class="subject-link" target="_blank">Design of Steel Structures</a>
-      </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_CONSTRUCTION_MANAGEMENT_FOLDER_LINK" class="subject-link" target="_blank">Construction Management</a>
-      </li>
-      <li>
-        <a href="https://drive.google.com/drive/folders/YOUR_ESTIMATING_COSTING_FOLDER_LINK" class="subject-link" target="_blank">Estimating and Costing</a>
-      </li>
+      <li id="no-results" style="display: none;">No subjects found.</li>
     </ul>
   </div>
+
+  <script>
+    // --- JavaScript for Live Search Functionality ---
+
+    document.getElementById('search-box').addEventListener('keyup', function() {
+      // 1. Get user input and convert to lowercase for case-insensitive search
+      let filter = this.value.toLowerCase();
+      
+      // 2. Get all the subject list items
+      let subjectList = document.getElementById('subject-list');
+      let items = subjectList.getElementsByClassName('subject-item');
+      
+      // 3. Get the 'no results' message element
+      let noResults = document.getElementById('no-results');
+      
+      let visibleItemsCount = 0;
+
+      // 4. Loop through all the subject items
+      for (let i = 0; i < items.length; i++) {
+        let a = items[i].getElementsByTagName('a')[0];
+        // Get the full text content of the link (code + name)
+        let textValue = a.textContent || a.innerText;
+
+        // 5. Check if the item's text includes the filter text
+        if (textValue.toLowerCase().indexOf(filter) > -1) {
+          items[i].style.display = ""; // Show the item
+          visibleItemsCount++;
+        } else {
+          items[i].style.display = "none"; // Hide the item
+        }
+      }
+      
+      // 6. Show or hide the 'no results' message based on the count
+      if (visibleItemsCount === 0) {
+        noResults.style.display = "block";
+      } else {
+        noResults.style.display = "none";
+      }
+    });
+  </script>
+
 </body>
 </html>
