@@ -4,36 +4,261 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Electrical Engineering Subjects</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Open Sans', Arial, sans-serif; background: #f7f7f9; }
-    .subject-container { max-width:580px; background:#fff; border-radius:12px;
-      margin:40px auto 0 auto; box-shadow:0 2px 12px rgba(44,62,80,0.08); padding:40px 32px 32px 32px;}
-    h1 { text-align:center; margin-bottom:30px; font-family:'DM Serif Text',serif; }
-    ul { padding:0; list-style:none; }
-    li { margin:15px 0; background:#f2f3f6; padding:14px 18px; border-radius:7px;}
-    a { text-decoration:none; color:#2676c7; font-weight:500; }
-    a:hover { color:#20507c; }
-    .back-link { display:block; margin-bottom:15px; color:#666; text-decoration:none; font-size:1em;}
-    .back-link:hover { color:#104477;}
+    /* CSS Variables for easy theme management */
+    :root {
+      --primary-color: #f0ad4e; /* Yellow/gold for electricity theme */
+      --primary-hover-color: #ec971f;
+      --background-color: #f7f7f9;
+      --card-background: #ffffff;
+      --text-color: #2c3e50;
+      --subtle-text-color: #7f8c8d;
+      --border-color: #e0e0e0;
+      --card-accent-color: #f0ad4e;
+    }
+
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+    }
+
+    .subject-container {
+      max-width: 680px;
+      margin: 40px auto;
+      padding: 40px;
+      background: var(--card-background);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(44, 62, 80, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 35px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5em;
+      color: var(--text-color);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 25px;
+      color: var(--subtle-text-color);
+      text-decoration: none;
+      font-size: 0.9em;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: var(--primary-color);
+    }
+
+    /* --- Search Bar Styles --- */
+    .search-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    #search-box {
+      width: 100%;
+      padding: 12px 15px 12px 45px; /* Make space for icon */
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      box-sizing: border-box; /* Important for padding and width */
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    #search-box:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(240, 173, 78, 0.25);
+    }
+    
+    .search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        fill: var(--subtle-text-color);
+    }
+
+    /* --- Subject List Styles --- */
+    #subject-list {
+      padding: 0;
+      list-style: none;
+      margin: 0;
+    }
+
+    .subject-item {
+      margin-bottom: 12px;
+      background: var(--card-background);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--card-accent-color);
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    }
+    .subject-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 12px rgba(44, 62, 80, 0.12);
+    }
+    
+    .subject-item a {
+      display: flex;
+      align-items: center;
+      padding: 18px 20px;
+      text-decoration: none;
+      color: var(--text-color);
+    }
+
+    .subject-code {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-right: 15px;
+      min-width: 80px; /* Aligns the names */
+    }
+    
+    .subject-name {
+      font-weight: 500;
+      flex-grow: 1; /* Takes up remaining space */
+    }
+    
+    .subject-item a:hover .subject-name {
+      color: var(--primary-hover-color);
+    }
+
+    #no-results {
+        text-align: center;
+        padding: 20px;
+        color: var(--subtle-text-color);
+        display: none; /* Hidden by default */
+    }
+
   </style>
 </head>
 <body>
+
   <div class="subject-container">
     <a href="index.html" class="back-link">&larr; Back to Departments</a>
-    <h1>Basic Subjects of Electrical Engineering</h1>
-    <ul>
-      <li><a href="#">EE201 - Circuit Theory</a></li>
-      <li><a href="#">EE202 - Electrical Machines</a></li>
-      <li><a href="#">EE203 - Power Systems</a></li>
-      <li><a href="#">EE204 - Control Systems</a></li>
-      <li><a href="#">EE205 - Measurement & Instrumentation</a></li>
-      <li><a href="#">EE206 - Power Electronics</a></li>
-      <li><a href="#">EE207 - Microprocessors & Microcontrollers</a></li>
-      <li><a href="#">EE208 - Electrical Drives</a></li>
-      <li><a href="#">EE209 - Renewable Energy Systems</a></li>
-      <li><a href="#">EE210 - High Voltage Engineering</a></li>
+    <h1>Electrical Engineering Subjects</h1>
+
+    <div class="search-container">
+      <svg class="search-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+      <input type="search" id="search-box" placeholder="Search by name or code (e.g., 'Control' or 'EE204')...">
+    </div>
+
+    <ul id="subject-list">
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE201</span>
+          <span class="subject-name">Circuit Theory</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE202</span>
+          <span class="subject-name">Electrical Machines</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE203</span>
+          <span class="subject-name">Power Systems</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE204</span>
+          <span class="subject-name">Control Systems</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE205</span>
+          <span class="subject-name">Measurement & Instrumentation</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE206</span>
+          <span class="subject-name">Power Electronics</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE207</span>
+          <span class="subject-name">Microprocessors & Microcontrollers</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE208</span>
+          <span class="subject-name">Electrical Drives</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE209</span>
+          <span class="subject-name">Renewable Energy Systems</span>
+        </a>
+      </li>
+      <li class="subject-item">
+        <a href="#">
+          <span class="subject-code">EE210</span>
+          <span class="subject-name">High Voltage Engineering</span>
+        </a>
+      </li>
+      <li id="no-results" style="display: none;">No subjects found.</li>
     </ul>
   </div>
+
+  <script>
+    // --- JavaScript for Live Search Functionality ---
+    // This script is generic and does not need to be changed.
+
+    document.getElementById('search-box').addEventListener('keyup', function() {
+      // 1. Get user input and convert to lowercase for case-insensitive search
+      let filter = this.value.toLowerCase();
+      
+      // 2. Get all the subject list items
+      let subjectList = document.getElementById('subject-list');
+      let items = subjectList.getElementsByClassName('subject-item');
+      
+      // 3. Get the 'no results' message element
+      let noResults = document.getElementById('no-results');
+      
+      let visibleItemsCount = 0;
+
+      // 4. Loop through all the subject items
+      for (let i = 0; i < items.length; i++) {
+        let a = items[i].getElementsByTagName('a')[0];
+        // Get the full text content of the link (code + name)
+        let textValue = a.textContent || a.innerText;
+
+        // 5. Check if the item's text includes the filter text
+        if (textValue.toLowerCase().indexOf(filter) > -1) {
+          items[i].style.display = ""; // Show the item
+          visibleItemsCount++;
+        } else {
+          items[i].style.display = "none"; // Hide the item
+        }
+      }
+      
+      // 6. Show or hide the 'no results' message based on the count
+      if (visibleItemsCount === 0) {
+        noResults.style.display = "block";
+      } else {
+        noResults.style.display = "none";
+      }
+    });
+  </script>
+
 </body>
 </html>
