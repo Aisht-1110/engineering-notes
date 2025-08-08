@@ -107,8 +107,9 @@ header nav a.active {
 /* --- Search Bar --- */
 .search-container {
     position: relative;
-    margin: -1 auto 10px auto;
-    max-width: 350px;
+    margin: 0 auto 10px auto;
+    max-width: 400px;
+    width :100% ;
 }
 #searchInput {
     width: 100%;
@@ -225,3 +226,4 @@ header nav a.active {
     grid-column: 1 / -1;
 
 }
+
