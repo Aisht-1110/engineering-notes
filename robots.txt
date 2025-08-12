@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://techbooks00001.netlify.app/sitemap.xml
