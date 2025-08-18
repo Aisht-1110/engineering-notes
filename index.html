@@ -117,19 +117,30 @@ document.getElementById("feedbackForm").onsubmit = async (e) => {
   try {
     let res = await fetch(FEEDBACK_ENDPOINT, {
       method: "POST",
-      body: new URLSearchParams({
-        "Message": message,
-        "Email": email,
-        "Page URL": window.location.href
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        feedback: message,
+        email: email,
+        page: window.location.href,
+        ua: navigator.userAgent
       })
     });
 
-    responseMsg.innerText = "✅ Thank you for your feedback!";
-    document.getElementById("feedbackForm").reset();
+    let data = await res.json();
+
+    if (data.ok) {
+      responseMsg.innerText = "✅ Thank you for your feedback!";
+      document.getElementById("feedbackForm").reset();
+    } else {
+      responseMsg.innerText = "❌ Error: " + (data.error || "Unknown error");
+    }
   } catch (err) {
     responseMsg.innerText = "❌ Error submitting feedback!";
   }
 };
 </script>
+
 </body>
 </html>
