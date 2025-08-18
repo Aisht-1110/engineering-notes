@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // The feedback button and form functionality
+    document.addEventListener('DOMContentLoaded', () => {
+    // Paste all of your JavaScript code here
+    
     const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbyKdzXTn1OQ0O8wx2jrUVr41Sny3ZG4Mn-plQchayLfjt8BrId42gyKzKWKy3_UB5z3/exec";
     
     // Check if the feedback elements exist before trying to attach listeners
@@ -17,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePopup = document.getElementById("closePopup");
     const feedbackForm = document.getElementById("feedbackForm");
     const feedbackResponse = document.getElementById("feedbackResponse");
-
+    
     if (feedbackBtn) {
         // Open popup
         feedbackBtn.onclick = () => {
@@ -26,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     }
-
+    
     if (closePopup) {
         // Close popup
         closePopup.onclick = () => {
@@ -35,19 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     }
-
+    
     if (feedbackForm) {
         // Submit feedback form
         feedbackForm.onsubmit = async (e) => {
             e.preventDefault();
-
+    
             let message = document.getElementById("message").value;
             let email = document.getElementById("email").value;
-
+    
             if (feedbackResponse) {
                 feedbackResponse.innerText = "Submitting...";
             }
-
+    
             try {
                 let res = await fetch(FEEDBACK_ENDPOINT, {
                     method: "POST",
@@ -61,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         ua: navigator.userAgent
                     })
                 });
-
+    
                 let data = await res.json();
-
+    
                 if (data.ok) {
                     if (feedbackResponse) {
                         feedbackResponse.innerText = "✅ Thank you for your feedback!";
