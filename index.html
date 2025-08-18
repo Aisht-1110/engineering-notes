@@ -74,5 +74,61 @@
     </footer>
 
     <script src="script.js"></script>
+<div id="feedbackPopup">
+  <div id="feedbackContent">
+    <span id="closePopup">&times;</span>
+    <h2>Website Feedback</h2>
+    <form id="feedbackForm">
+      <label for="message">Your Feedback:</label>
+      <textarea id="message" name="message" required></textarea>
+
+      <label for="email">Your Email (optional):</label>
+      <input type="email" id="email" name="email" placeholder="example@email.com">
+
+      <button type="submit">Submit</button>
+    </form>
+    <p id="feedbackResponse"></p>
+  </div>
+</div>
+<script>
+const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbzm7d2YX5QXAAIWiPheWxelvGxkqqnRO6r4spMYbm5PdVbwDTc_gsGYy4kd8yzZVFgg/exec";
+
+// Open popup
+document.getElementById("feedbackBtn").onclick = () => {
+  document.getElementById("feedbackPopup").style.display = "block";
+};
+
+// Close popup
+document.getElementById("closePopup").onclick = () => {
+  document.getElementById("feedbackPopup").style.display = "none";
+};
+
+// Submit feedback form
+document.getElementById("feedbackForm").onsubmit = async (e) => {
+  e.preventDefault();
+
+  let message = document.getElementById("message").value;
+  let email = document.getElementById("email").value;
+
+  let responseMsg = document.getElementById("feedbackResponse");
+  responseMsg.innerText = "Submitting...";
+
+  try {
+    let res = await fetch(FEEDBACK_ENDPOINT, {
+      method: "POST",
+      body: new URLSearchParams({
+        "Message": message,
+        "Email": email,
+        "Page URL": window.location.href
+      })
+    });
+
+    responseMsg.innerText = "✅ Thank you for your feedback!";
+    document.getElementById("feedbackForm").reset();
+  } catch (err) {
+    responseMsg.innerText = "❌ Error submitting feedback!";
+  }
+};
+</script>
 </body>
 </html>
