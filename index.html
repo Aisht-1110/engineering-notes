@@ -74,23 +74,26 @@
     </footer>
 
     <script src="script.js"></script>
-    <button id="feedbackBtn">💬 Feedback</button>
-<div id="feedbackPopup">
-  <div id="feedbackContent">
-    <span id="closePopup">&times;</span>
-    <h2>Website Feedback</h2>
-    <form id="feedbackForm">
-      <label for="message">Your Feedback:</label>
-      <textarea id="message" name="message" required></textarea>
+    <!-- Feedback Button with formsappId -->
+<button id="feedbackBtn" formsappId="68ac53ecbd643900020270b0">💬 Feedback</button>
 
-      <label for="email">Your Email (optional):</label>
-      <input type="email" id="email" name="email" placeholder="example@email.com">
+<!-- Forms.app Embed Script -->
+<script src="https://forms.app/cdn/embed.js" type="text/javascript" async defer 
+  onload="new formsapp('68ac53ecbd643900020270b0', 'popup', {
+    'overlay':'rgba(45,45,45,0.5)',
+    'button':{
+      'color':'#ff9e24',
+      'text':'💬 Feedback'
+    },
+    'width':'800px',
+    'height':'600px',
+    'openingAnimation':{
+      'entrance':'animate__fadeIn',
+      'exit':'animate__fadeOut'
+    }
+  }, 'https://lf6c8t67.forms.app');">
+</script>
 
-      <button type="submit">Submit</button>
-    </form>
-    <p id="feedbackResponse"></p>
-  </div>
-</div>
 
 
 </body>
