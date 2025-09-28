@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME303: Metrology and Measurement</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the Inter font and a smooth background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb; /* Light background color */
+        }
+        /* Custom shadow for cards */
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Section -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <!-- Breadcrumb Navigation -->
+            <nav class="text-sm font-medium text-gray-500 mb-2" aria-label="Breadcrumb">
+                <a href="#" class="hover:text-indigo-600 transition duration-150">Home</a>
+                <span class="mx-2">/</span>
+                <a href="#" class="hover:text-indigo-600 transition duration-150">Courses</a>
+                <span class="mx-2">/</span>
+                <span class="text-indigo-600">ME303</span>
+            </nav>
+            
+            <!-- Main Title, Icon, and Course Code -->
+            <div class="flex items-center space-x-4">
+                <!-- Icon for Metrology (Gauge/Precision Tool) -->
+                <svg class="w-10 h-10 text-indigo-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v8m2-8a4 4 0 10-8 0v8a4 4 0 108 0v-8zm-4 4h.01"></path>
+                </svg>
+                <div>
+                    <h1 class="text-4xl font-extrabold text-gray-900 mb-1">
+                        ME303: Metrology and Measurement
+                    </h1>
+                    <p class="text-lg text-indigo-600 font-semibold">
+                        Mechanical Engineering Department
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div class="lg:grid lg:grid-cols-3 lg:gap-10">
+            
+            <!-- Column 1: Chapter List (Takes 2/3 width on large screens) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Course Overview Card -->
+                <div class="bg-white p-6 rounded-xl border border-gray-100 card-shadow">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-3">Course Overview</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        This course covers the fundamental principles of precision measurement, calibration techniques, and advanced instruments used in mechanical and manufacturing engineering. You will learn how to ensure accuracy, analyze errors, and utilize modern tools like CMMs and laser interferometers to maintain quality control in industrial processes.
+                    </p>
+                </div>
+
+                <!-- Chapter List Section -->
+                <h2 class="text-3xl font-bold text-gray-900 pt-4 pb-2">Course Chapters</h2>
+                
+                <!-- Chapter Card Template -->
+                <div id="chapter-list" class="space-y-4">
+                    <!-- Chapter data will be injected here by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Column 2: Supplementary Resources (Takes 1/3 width on large screens) -->
+            <div class="lg:col-span-1 mt-8 lg:mt-0 space-y-6">
+
+                
+                
+                <!-- Downloadable Resources Card -->
+                <div class="bg-white p-6 rounded-xl border border-gray-100 card-shadow">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Additional Resources</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="block bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium py-3 px-4 rounded-lg transition duration-150 text-center">
+                                Download Course Syllabus (PDF)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium py-3 px-4 rounded-lg transition duration-150 text-center">
+                                Previous Year Question Papers
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium py-3 px-4 rounded-lg transition duration-150 text-center">
+                                Metrology Lab Manual
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- View All Resources Button with high contrast and scale effect -->
+                    <div class="mt-6 border-t border-gray-100 pt-4">
+                        <a href="#resources-section" class="w-full inline-flex justify-center items-center px-6 py-4 border border-transparent text-lg font-bold rounded-xl shadow-2xl text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-400 focus:ring-opacity-75 transition duration-300 transform hover:scale-[1.02]">
+                            <!-- Icon for a list or resources -->
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                            View All Resources
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Data for the chapters (Updated with Chapter 6 and descriptions)
+        const chapters = [
+            {
+                id: 1,
+                title: "Introduction to Metrology",
+                description: "Defines key terms, concepts of accuracy, precision, and the necessity of metrology in mechanical engineering.",
+                readLink: "https://drive.google.com/file/d/1UXrHz9I-uat7My8zVjMgRp_1ZWJW-GCF/view?usp=drive_link",
+                downloadLink: "https://drive.google.com/file/d/1UXrHz9I-uat7My8zVjMgRp_1ZWJW-GCF/view?usp=drive_link"
+            },
+            {
+                id: 2,
+                title: "SYSTEM OF LIMITS, FITS, TOLERANCE AND GAUGING ",
+                description: "Covers basic measuring instruments like Vernier calipers, micrometers, slip gauges, and methods for precise angular measurements.",
+                readLink: "https://drive.google.com/file/d/12x0yg5iupg7fCvE_ufOUbzliLhwoQpRw/view?usp=drive_link",
+                downloadLink: "https://drive.google.com/file/d/12x0yg5iupg7fCvE_ufOUbzliLhwoQpRw/view?usp=drive_link"
+            },
+            {
+                id: 3,
+                title: "COMPARATOR",
+                description: "Explores the working principle and applications of mechanical, electrical, and pneumatic comparators, along with optical flats and microscopes.",
+                readLink: "#chapter-3-read",
+                downloadLink: "#chapter-3-download"
+            },
+            
+            {
+                id: 4,
+                title: " Measurement",
+                description: "Focuses on defining surface roughness parameters (Ra, Rq, Rz) and the instrumentation used to measure surface texture, such as stylus profilometers.",
+                readLink: "https://drive.google.com/file/d/1RSpyrEbwEOH78uY41EsYZ2Xmrca6aO_E/view?usp=drive_link",
+                downloadLink: "https://drive.google.com/file/d/1RSpyrEbwEOH78uY41EsYZ2Xmrca6aO_E/view?usp=drive_link"
+            },
+            {
+                id: 5,
+                title: "Statistical Quality Control (SQC).",
+                description: "This unit covers the three branches of SQC: descriptive statistics, statistical process control (SPC) with control charts for variables and attributes, and acceptance sampling.",
+                readLink: "https://drive.google.com/file/d/1YeJjkGMR74RTTMZoKFBz5-2z0AsgoLL5/view?usp=sharing",
+                downloadLink: "#chapter-5-downloadhttps://drive.google.com/file/d/1YeJjkGMR74RTTMZoKFBz5-2z0AsgoLL5/view?usp=sharing"
+            },
+            {
+                id: 6,
+                title: "Quality Management and Risk Analysis",
+                description: "Covers process improvement methodologies like Zero Defects and Six Sigma, risk assessment techniques like FMEA and Fault Tree Analysis, and quality certification standards like ISO 9000.",
+                readLink: "https://drive.google.com/file/d/1aIJ3U-WDDSj37h93W6Oq2k2HcZf8TQR1/view?usp=drive_link",
+                downloadLink: "https://drive.google.com/file/d/1aIJ3U-WDDSj37h93W6Oq2k2HcZf8TQR1/view?usp=drive_link"
+            }
+        ];
+
+        const chapterList = document.getElementById('chapter-list');
+
+        // Function to create the HTML for a single chapter card (AMAZING UPDATE)
+        function createChapterCard(chapter) {
+            const chapterCard = document.createElement('div');
+            // Dramatic hover: lifts card 5px up, increases shadow, and changes border color
+            chapterCard.className = 'bg-white p-6 rounded-xl border border-gray-100 hover:border-indigo-500 card-shadow transition duration-500 transform hover:translate-y-[-5px] hover:shadow-2xl';
+            
+            chapterCard.innerHTML = `
+                <div class="flex flex-col md:flex-row justify-between items-start">
+
+                    <div class="flex-grow pr-4">
+                        <!-- Chapter ID Badge and Title -->
+                        <div class="flex items-center space-x-3 mb-3">
+                            <!-- Premium ID Circle Badge -->
+                            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-extrabold shadow-md">
+                                ${chapter.id}
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-gray-900 leading-snug">
+                                ${chapter.title}
+                            </h3>
+                        </div>
+
+                        <!-- Description Block - Slightly indented and faded text -->
+                        <div class="pl-11 pr-2 mt-2">
+                           <p class="text-gray-500 italic text-sm leading-relaxed">
+                               ${chapter.description}
+                           </p>
+                        </div>
+                    </div>
+
+                    <!-- Actions Column - Buttons stack full-width on mobile, side-by-side on desktop -->
+                    <div class="flex flex-col space-y-3 mt-4 md:mt-0 md:pl-4 md:flex-shrink-0 w-full md:w-auto">
+                        
+                        <!-- Read Online Button (Primary Action) -->
+                        <a href="${chapter.readLink}" class="read-button inline-flex justify-center items-center px-4 py-3 border border-transparent text-sm font-semibold rounded-lg shadow-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition duration-150 w-full">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5 5.753 5 4.167 5.477 3 6.253v13C4.167 18.477 5.753 18 7.5 18s3.333.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.333.477 4.5 1.253v13C19.833 18.477 18.247 18 16.5 18s-3.333.477-4.5 1.253"></path></svg>
+                            Read Chapter
+                        </a>
+
+                        <!-- Download PDF Button (Secondary Action) -->
+                        <a href="${chapter.downloadLink}" download class="download-button inline-flex justify-center items-center px-4 py-3 border border-gray-300 text-sm font-medium rounded-lg shadow-sm text-gray-700 bg-gray-50 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition duration-150 w-full">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Download PDF
+                        </a>
+                    </div>
+                </div>
+            `;
+            return chapterCard;
+        }
+
+        // Loop through the data and append cards to the list
+        chapters.forEach(chapter => {
+            chapterList.appendChild(createChapterCard(chapter));
+        });
+
+        // Simple placeholder click handler for demonstration
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.email-instructor-btn')) {
+                // In a real app, this would trigger the mailto link or a contact form modal
+                console.log(`Emailing Instructor: ${e.target.closest('a').getAttribute('href')}`);
+            } else if (e.target.closest('.read-button')) {
+                console.log(`Navigating to Read Online: ${e.target.closest('a').getAttribute('href')}`);
+            } else if (e.target.closest('.download-button')) {
+                console.log(`Attempting Download: ${e.target.closest('a').getAttribute('href')}`);
+            }
+        });
+
+    </script>
+</body>
+</html>
