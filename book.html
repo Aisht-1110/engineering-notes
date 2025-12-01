@@ -770,7 +770,7 @@
             const themeToggle = document.getElementById('theme-toggle');
 
             // 1. Set initial theme based on localStorage or default to dark
-            const currentTheme = localStorage.getItem('theme') || 'dark';
+            const currentTheme = localStorage.getItem('theme') || 'light';
             body.setAttribute('data-theme', currentTheme);
             
             // 2. Update icon to reflect the current theme
@@ -823,4 +823,5 @@
     </script>
 
 </body>
+
 
