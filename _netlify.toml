@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "https://btechbook.netlify.app/*"
-  to = "https://btechbook.in/:splat"
-  status = 301
-  force = true
