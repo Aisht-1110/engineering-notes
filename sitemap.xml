@@ -1,31 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://techbooks00001.netlify.app/</loc>
-    <lastmod>2025-08-12</lastmod>
-  </url>
-  <url>
-    <loc>https://techbooks00001.netlify.app/book</loc>
-    <lastmod>2025-08-12</lastmod>
-  </url>
-  <url>
-    <loc>https://techbooks00001.netlify.app/civil-subjects</loc>
-    <lastmod>2025-08-12</lastmod>
-  </url>
-  <url>
-    <loc>https://techbooks00001.netlify.app/mech_sub</loc>
-    <lastmod>2025-08-12</lastmod>
-  </url>
-  <url>
-    <loc>https://techbooks00001.netlify.app/electrical-subjects</loc>
-    <lastmod>2025-08-12</lastmod>
-  </url>
-  <url>
-    <loc>https://techbooks00001.netlify.app/cse_sub</loc>
-    <lastmod>2025-08-12</lastmod>
-  </url>
-  <url>
-    <loc>https://techbooks00001.netlify.app/metal.html</loc>
-    <lastmod>2025-08-12</lastmod>
-  </url>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://btechbook.in/</loc>
+  <lastmod>2025-12-01T12:05:02+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://btechbook.in/book</loc>
+  <lastmod>2025-12-01T12:05:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://btechbook.in/civil-subjects</loc>
+  <lastmod>2025-12-01T12:05:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://btechbook.in/mech_sub</loc>
+  <lastmod>2025-12-01T12:05:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://btechbook.in/electrical-subjects</loc>
+  <lastmod>2025-12-01T12:05:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://btechbook.in/cse_sub</loc>
+  <lastmod>2025-12-01T12:05:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://btechbook.in/metrology</loc>
+  <lastmod>2025-12-01T12:05:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
 </urlset>
