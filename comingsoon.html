@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | BTechBook.in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#0ea5e9', // Sky 500
+                            600: '#0284c7', // Sky 600
+                            orange: '#f97316',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            overflow: hidden; /* Prevent scrolling when playing */
+            touch-action: none; /* Prevent zoom/scroll on mobile */
+            user-select: none;
+        }
+
+        /* Neon Glow Text */
+        .neon-text {
+            text-shadow: 0 0 10px rgba(14, 165, 233, 0.5), 
+                         0 0 20px rgba(14, 165, 233, 0.3);
+        }
+
+        /* Game Canvas Container */
+        #game-container {
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            cursor: default; /* Changed from grab to default until started */
+            transition: transform 0.1s;
+        }
+        
+        #game-container.active {
+            cursor: grab;
+        }
+        #game-container.active:active {
+            cursor: grabbing;
+        }
+        
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        canvas {
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            border-radius: 8px;
+            border: 2px solid #334155;
+            display: block;
+        }
+
+        .score-board {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        /* Start Screen Overlay */
+        #start-screen {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease;
+        }
+        #start-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header Content -->
+    <div class="text-center mb-6 z-10 pointer-events-none">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-400 text-xs font-semibold mb-2">
+            <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+            BTechBook.in
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight neon-text text-white mb-1">
+            COMING SOON
+        </h1>
+        <p class="text-brand-500 font-bold text-sm tracking-widest uppercase">
+            Start Your Streak!
+        </p>
+    </div>
+
+    <!-- Game Area -->
+    <div id="game-container" class="relative group">
+        <canvas id="gameCanvas" width="500" height="400"></canvas>
+        
+        <!-- Scoreboard -->
+        <div class="absolute top-4 right-4 score-board rounded-lg p-3 text-right shadow-lg">
+            <div class="text-slate-400 text-xs uppercase tracking-wider font-semibold">Score</div>
+            <div class="text-brand-orange font-bold font-mono text-3xl leading-none" id="score">0</div>
+            
+            <div class="mt-2 pt-2 border-t border-slate-700">
+                <div class="text-slate-500 text-[10px] uppercase tracking-wider">High Score</div>
+                <div class="text-white font-mono text-sm" id="highScore">0</div>
+            </div>
+        </div>
+
+        <!-- Streak Indicator -->
+        <div id="streak-container" class="absolute top-4 left-4 opacity-0 transition-opacity duration-300">
+            <div class="flex items-center gap-2 text-orange-500 font-bold italic text-xl animate-pulse">
+                <i class="fas fa-fire"></i>
+                <span id="streak-count">0</span> STREAK!
+            </div>
+            <div class="text-xs text-orange-300">2x Points Active</div>
+        </div>
+        
+        <!-- START SCREEN OVERLAY -->
+        <div id="start-screen" class="absolute inset-0 flex flex-col items-center justify-center rounded-lg z-20">
+            <div class="w-20 h-20 bg-brand-500/20 rounded-full flex items-center justify-center mb-6 ring-2 ring-brand-500/50 animate-bounce">
+                <i class="fas fa-basketball-ball text-4xl text-brand-500"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-white mb-2 tracking-tight">HOOPS</h2>
+            <p class="text-slate-400 mb-8 text-sm">Drag to aim. Release to shoot.</p>
+            
+            <button onclick="startGame()" class="group relative px-8 py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-full transition-all shadow-lg shadow-brand-500/30 hover:scale-105 active:scale-95">
+                <span class="relative z-10 flex items-center gap-2">
+                    START GAME <i class="fas fa-play text-xs"></i>
+                </span>
+                <div class="absolute inset-0 rounded-full bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Home Link -->
+    <a href="index.html" class="mt-8 px-6 py-2 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-sm transition-all flex items-center gap-2 z-10 border border-slate-700">
+        <i class="fas fa-arrow-left"></i> Return to Homepage
+    </a>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const highScoreEl = document.getElementById('highScore');
+        const startScreen = document.getElementById('start-screen');
+        const gameContainer = document.getElementById('game-container');
+        const streakContainer = document.getElementById('streak-container');
+        const streakCountEl = document.getElementById('streak-count');
+
+        // Game Variables
+        let gameActive = false;
+        let score = 0;
+        let highScore = localStorage.getItem('btech_hoops_highscore') || 0;
+        let streak = 0;
+        let gravity = 0.6;
+        let friction = 0.99; 
+        let bounce = 0.7; 
+        
+        highScoreEl.innerText = highScore;
+
+        // Ball State
+        let ball = {
+            x: 100,
+            y: 300,
+            radius: 18,
+            vx: 0,
+            vy: 0,
+            rotation: 0,
+            isDragging: false,
+            isInAir: false,
+            dragStartX: 0,
+            dragStartY: 0
+        };
+
+        // Hoop State
+        let hoop = {
+            x: 400,
+            y: 150,
+            baseX: 400,
+            width: 70,
+            rimHeight: 5,
+            backboardH: 80,
+            moveSpeed: 0,
+            moveRange: 0,
+            time: 0
+        };
+
+        // Effects
+        let particles = [];
+        let netOffset = 0; 
+        let textPopup = null; 
+
+        // Start Game Function
+        function startGame() {
+            gameActive = true;
+            startScreen.classList.add('hidden');
+            gameContainer.classList.add('active');
+            score = 0;
+            streak = 0;
+            updateUI();
+            updateStreakUI();
+            resetBall();
+        }
+
+        // Resize Canvas
+        function resize() {
+            if (window.innerWidth < 550) {
+                canvas.width = window.innerWidth - 30;
+                canvas.height = 400;
+                hoop.baseX = canvas.width - 80;
+                ball.x = 60;
+                ball.y = canvas.height - 60;
+            } else {
+                canvas.width = 500;
+                canvas.height = 400;
+                hoop.baseX = 400;
+                ball.x = 100;
+                ball.y = 300;
+            }
+            hoop.x = hoop.baseX;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- Input Handling ---
+        function getMousePos(evt) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (evt.clientX || evt.touches[0].clientX) - rect.left,
+                y: (evt.clientY || evt.touches[0].clientY) - rect.top
+            };
+        }
+
+        function handleStart(evt) {
+            if (!gameActive || ball.isInAir) return; 
+            const pos = getMousePos(evt);
+            const dist = Math.hypot(pos.x - ball.x, pos.y - ball.y);
+            if (dist < ball.radius * 3) {
+                ball.isDragging = true;
+                ball.dragStartX = pos.x;
+                ball.dragStartY = pos.y;
+            }
+        }
+
+        function handleMove(evt) {
+            if (!ball.isDragging) return;
+            const pos = getMousePos(evt);
+            ball.dragCurrentX = pos.x;
+            ball.dragCurrentY = pos.y;
+        }
+
+        function handleEnd(evt) {
+            if (!ball.isDragging) return;
+            ball.isDragging = false;
+            ball.isInAir = true;
+
+            const pos = evt.type.includes('touch') ? {x: ball.dragCurrentX, y: ball.dragCurrentY} : getMousePos(evt);
+            
+            // Aiming & Power
+            const power = 0.16;
+            ball.vx = (ball.x - pos.x) * power;
+            ball.vy = (ball.y - pos.y) * power;
+            
+            // Cap max speed
+            const maxSpeed = 25;
+            const speed = Math.hypot(ball.vx, ball.vy);
+            if (speed > maxSpeed) {
+                const ratio = maxSpeed / speed;
+                ball.vx *= ratio;
+                ball.vy *= ratio;
+            }
+        }
+
+        gameContainer.addEventListener('mousedown', handleStart);
+        gameContainer.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+
+        gameContainer.addEventListener('touchstart', handleStart, {passive: false});
+        gameContainer.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, {passive: false});
+        window.addEventListener('touchend', handleEnd);
+
+
+        // --- Game Logic ---
+        function update() {
+            // Idle Animation when game not started
+            if (!gameActive) {
+                ball.y = (window.innerWidth < 550 ? canvas.height - 60 : 300) + Math.sin(Date.now() / 300) * 5;
+                // Just keep drawing loop running for particles/hoop
+                // Skip physics
+            }
+
+            // Move Hoop (Difficulty scaling)
+            hoop.time += 0.02;
+            if (gameActive && score >= 5) {
+                hoop.moveRange = Math.min(50, (score - 4) * 10);
+                hoop.moveSpeed = Math.min(2, 0.5 + (score * 0.1));
+                hoop.x = hoop.baseX + Math.sin(hoop.time * hoop.moveSpeed) * hoop.moveRange;
+            } else {
+                hoop.x = hoop.baseX;
+            }
+
+            let backboardX = hoop.x + hoop.width/2 + 5;
+            let backboardY = hoop.y - 50;
+            
+            // Ball Physics
+            if (gameActive && ball.isInAir) {
+                ball.vy += gravity;
+                ball.vx *= friction;
+                ball.vy *= friction;
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                
+                ball.rotation += ball.vx * 0.1;
+
+                if (streak >= 3) {
+                    if (Math.random() > 0.3) {
+                        particles.push({
+                            x: ball.x + (Math.random()-0.5)*10,
+                            y: ball.y + (Math.random()-0.5)*10,
+                            vx: (Math.random()-0.5),
+                            vy: (Math.random()-0.5),
+                            life: 1.0,
+                            color: `hsl(${Math.random()*60 + 10}, 100%, 60%)`, 
+                            size: Math.random() * 6 + 2
+                        });
+                    }
+                }
+
+                // Floor Collision
+                if (ball.y + ball.radius > canvas.height) {
+                    ball.y = canvas.height - ball.radius;
+                    ball.vy *= -bounce;
+                    ball.vx *= 0.8; 
+                    
+                    if (!ball.scored) {
+                        if (streak > 0) createTextPopup("Streak Lost", ball.x, ball.y - 40, '#94a3b8');
+                        streak = 0;
+                        updateStreakUI();
+                    }
+
+                    if (Math.abs(ball.vy) < 1 && Math.abs(ball.vx) < 1) {
+                        resetBall();
+                    }
+                }
+
+                // Wall Collisions
+                if (ball.x - ball.radius < 0) { ball.x = ball.radius; ball.vx *= -bounce; }
+                if (ball.x + ball.radius > canvas.width) { ball.x = canvas.width - ball.radius; ball.vx *= -bounce; }
+
+                // Backboard Collision
+                if (ball.x + ball.radius > backboardX - 5 && 
+                    ball.x - ball.radius < backboardX && 
+                    ball.y > backboardY && 
+                    ball.y < backboardY + hoop.backboardH) {
+                        ball.vx *= -bounce;
+                        ball.x = backboardX - 5 - ball.radius;
+                }
+
+                // Rim (Left & Right)
+                const rimLeftX = hoop.x - hoop.width/2;
+                const rimRightX = hoop.x + hoop.width/2;
+                const rimY = hoop.y;
+
+                checkRimCollision(rimLeftX, rimY);
+                checkRimCollision(rimRightX, rimY);
+
+                // Scoring
+                if (ball.x > rimLeftX + 5 && ball.x < rimRightX - 5 &&
+                    ball.y > rimY && ball.y < rimY + 15 &&
+                    ball.vy > 0 && !ball.scored) {
+                    
+                    ball.scored = true;
+                    let points = streak >= 2 ? 2 : 1;
+                    if (streak >= 2) points = 2; 
+                    
+                    score += points;
+                    streak++;
+                    
+                    if (score > highScore) {
+                        highScore = score;
+                        localStorage.setItem('btech_hoops_highscore', highScore);
+                    }
+
+                    updateUI();
+                    updateStreakUI();
+                    spawnConfetti(hoop.x, hoop.y);
+                    netOffset = 20; 
+                    triggerScreenShake();
+                    let msg = points > 1 ? "FIRE! +2" : "SWISH! +1";
+                    createTextPopup(msg, hoop.x, hoop.y - 60, '#f97316');
+                }
+            }
+
+            // Particles update
+            for(let i=particles.length-1; i>=0; i--) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.03;
+                if(p.life <= 0) particles.splice(i, 1);
+            }
+
+            // Text Popup update
+            if (textPopup) {
+                textPopup.y -= 1.5;
+                textPopup.opacity -= 0.03;
+                if(textPopup.opacity <= 0) textPopup = null;
+            }
+
+            if (netOffset > 0) netOffset *= 0.9;
+        }
+
+        function checkRimCollision(rx, ry) {
+            let dist = Math.hypot(ball.x - rx, ball.y - ry);
+            if (dist < ball.radius + 3) {
+                let nx = (ball.x - rx) / dist;
+                let ny = (ball.y - ry) / dist;
+                let speed = Math.hypot(ball.vx, ball.vy);
+                ball.vx = nx * speed * bounce;
+                ball.vy = ny * speed * bounce;
+            }
+        }
+
+        function resetBall() {
+            ball.isInAir = false;
+            ball.scored = false;
+            ball.vx = 0;
+            ball.vy = 0;
+            ball.rotation = 0;
+            
+            let startX = window.innerWidth < 550 ? 60 : 100;
+            let startY = window.innerWidth < 550 ? canvas.height - 60 : 300;
+
+            let interval = setInterval(() => {
+                ball.x += (startX - ball.x) * 0.15;
+                ball.y += (startY - ball.y) * 0.15;
+                if (Math.abs(ball.x - startX) < 1 && Math.abs(ball.y - startY) < 1) {
+                    ball.x = startX;
+                    ball.y = startY;
+                    clearInterval(interval);
+                }
+            }, 16);
+        }
+
+        function spawnConfetti(x, y) {
+            for(let i=0; i<20; i++) {
+                particles.push({
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    life: 1.2,
+                    color: `hsl(${Math.random()*360}, 70%, 50%)`,
+                    size: Math.random() * 4 + 2
+                });
+            }
+        }
+
+        function createTextPopup(text, x, y, color) {
+            textPopup = { text: text, x: x, y: y, opacity: 1, color: color };
+        }
+
+        function triggerScreenShake() {
+            gameContainer.classList.add('shake');
+            setTimeout(() => {
+                gameContainer.classList.remove('shake');
+            }, 500);
+        }
+
+        function updateUI() {
+            scoreEl.innerText = score;
+            highScoreEl.innerText = highScore;
+        }
+
+        function updateStreakUI() {
+            streakCountEl.innerText = streak;
+            if (streak >= 3) {
+                streakContainer.style.opacity = '1';
+            } else {
+                streakContainer.style.opacity = '0';
+            }
+        }
+
+        // --- Drawing ---
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Trajectory Line
+            if (ball.isDragging && ball.dragCurrentX) {
+                ctx.beginPath();
+                ctx.moveTo(ball.x, ball.y);
+                let dx = ball.x - ball.dragCurrentX;
+                let dy = ball.y - ball.dragCurrentY;
+                
+                let simX = ball.x;
+                let simY = ball.y;
+                let simVx = dx * 0.16;
+                let simVy = dy * 0.16;
+                
+                ctx.beginPath();
+                ctx.moveTo(simX, simY);
+                for(let i=0; i<15; i++) {
+                    simX += simVx;
+                    simY += simVy;
+                    simVy += gravity;
+                    ctx.lineTo(simX, simY);
+                }
+                
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([5, 5]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius + 5, 0, Math.PI*2);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(1, Math.hypot(dx,dy)/200)})`;
+                ctx.stroke();
+            }
+
+            let backboardX = hoop.x + hoop.width/2 + 5;
+            let backboardY = hoop.y - 50;
+
+            // 2. Backboard
+            ctx.fillStyle = '#cbd5e1'; 
+            ctx.fillRect(backboardX, backboardY, 8, hoop.backboardH);
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(backboardX + 2, backboardY + 45, 6, 4);
+
+            // 3. Net (Back)
+            ctx.beginPath();
+            let netTopY = hoop.y;
+            let netBotY = hoop.y + 45 + (netOffset * 0.8); 
+            let netL = hoop.x - hoop.width/2 + 5;
+            let netR = hoop.x + hoop.width/2 - 5;
+            
+            ctx.moveTo(netL, netTopY);
+            ctx.quadraticCurveTo((netL+netR)/2, netBotY, netR, netTopY);
+            
+            for(let i=1; i<=4; i++) {
+               let y = netTopY + (i * 10) + (netOffset * 0.15 * i);
+               let inset = i * 2;
+               ctx.moveTo(netL + inset, y);
+               ctx.lineTo(netR - inset, y);
+            }
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // 4. Rim (Back)
+            ctx.beginPath();
+            ctx.strokeStyle = '#dc2626'; 
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.moveTo(hoop.x - hoop.width/2, hoop.y);
+            ctx.lineTo(hoop.x + hoop.width/2, hoop.y); 
+            ctx.stroke();
+
+            // 5. Particles
+            for(let p of particles) {
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+
+            // 6. Ball
+            ctx.save();
+            ctx.translate(ball.x, ball.y);
+            ctx.rotate(ball.rotation);
+
+            ctx.beginPath();
+            ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
+            let gradient = ctx.createRadialGradient(-5, -5, 2, 0, 0, ball.radius);
+            gradient.addColorStop(0, streak >= 3 ? '#fed7aa' : '#fb923c'); 
+            gradient.addColorStop(1, streak >= 3 ? '#ea580c' : '#c2410c'); 
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            ctx.strokeStyle = '#7c2d12'; 
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(-ball.radius, 0); ctx.lineTo(ball.radius, 0); 
+            ctx.moveTo(0, -ball.radius); ctx.lineTo(0, ball.radius); 
+            ctx.arc(0, 0, ball.radius * 0.6, 0, Math.PI*2);
+            ctx.stroke();
+            
+            ctx.restore();
+
+            // 7. Rim Connection
+            ctx.beginPath();
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 4;
+            ctx.moveTo(hoop.x + hoop.width/2, hoop.y);
+            ctx.lineTo(backboardX, hoop.y - 5);
+            ctx.stroke();
+
+            // 8. Text Popup
+            if (textPopup) {
+                ctx.fillStyle = textPopup.color;
+                ctx.globalAlpha = textPopup.opacity;
+                ctx.font = "bold 28px 'Outfit', sans-serif";
+                ctx.fillText(textPopup.text, hoop.x - 60, textPopup.y);
+                ctx.globalAlpha = 1;
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        setInterval(update, 16); 
+        draw(); 
+    </script>
+</body>
+</html>
