@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | BTechBook.in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Modern Gradient Background */
+        body {
+            background-color: #f8fafc;
+        }
+        
+        .blob-bg {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(180deg, rgba(14, 165, 233, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: moveBlob 20s infinite alternate;
+        }
+
+        /* Placeholder Pattern */
+        .img-placeholder {
+            background-color: #e2e8f0;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2394a3b8' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-weight: 500;
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .img-placeholder:hover {
+            border-color: #0ea5e9;
+            color: #0ea5e9;
+        }
+
+        @keyframes moveBlob {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-30%, -30%) scale(1.1); }
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased overflow-x-hidden flex flex-col min-h-screen">
+
+    <!-- Simple Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo linking to Home -->
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white transform group-hover:rotate-12 transition-transform duration-300">
+                        <i class="fas fa-book-open text-sm"></i>
+                    </div>
+                    <span class="font-bold text-xl text-slate-900">BTechBook<span class="text-brand-600">.in</span></span>
+                </a>
+
+                <!-- Back to Home Button -->
+                <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-brand-50 transition-all border border-transparent hover:border-brand-100">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative pt-32 pb-16 overflow-hidden">
+        <div class="blob-bg top-0 left-0"></div>
+        <div class="blob-bg bottom-0 right-0 bg-purple-200/20"></div>
+
+        <div class="relative max-w-4xl mx-auto px-4 text-center z-10">
+            <span class="text-brand-600 font-bold tracking-wider text-sm uppercase mb-4 block">About Us</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 leading-tight">
+                Empowering Engineers <br>
+                <span class="text-brand-600">Across India</span>
+            </h1>
+            <p class="mt-4 text-xl text-slate-600 max-w-2xl mx-auto font-light">
+                We are the bridge between confusion and clarity. BTechBook is designed to be the ultimate companion for your engineering journey.
+            </p>
+        </div>
+    </div>
+
+    <!-- Mission Story -->
+    <div class="py-16 bg-white border-y border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                
+                <!-- Story Text -->
+                <div class="order-2 md:order-1">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-6">Our Story</h2>
+                    <p class="text-slate-600 mb-4 leading-relaxed">
+                        It started with a simple problem: finding reliable notes the night before an exam was impossible. We realized that while information is everywhere, <b>organized</b> information is rare.
+                    </p>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        BTechBook.in was built to fix this. We curate the best resources from toppers, professors, and standard textbooks to create a one-stop repository for students.
+                    </p>
+                    
+                    <div class="flex gap-4 mt-8">
+                        <div class="border-l-4 border-brand-500 pl-4">
+                            <span class="block text-2xl font-bold text-slate-900">100%</span>
+                            <span class="text-sm text-slate-500">Free Access</span>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <span class="block text-2xl font-bold text-slate-900">Verified</span>
+                            <span class="text-sm text-slate-500">Content</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IMAGE REF: Main About Image -->
+                <!-- Replace the div below with: <img src="your-image-url.jpg" class="rounded-2xl shadow-xl w-full" alt="Our Team"> -->
+                <div class="order-1 md:order-2 h-64 md:h-80 w-full rounded-2xl shadow-lg img-placeholder relative group">
+                    <div class="text-center p-4">
+                        <i class="fas fa-image text-4xl mb-2 block"></i>
+                        <span>Add 'Our Story' Image Reference Here</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- What We Do Cards -->
+    <div class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl font-bold text-slate-900">Our Core Pillars</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100">
+                    <!-- IMAGE REF: Notes Icon/Image -->
+                    <div class="h-32 img-placeholder">
+                        <span class="text-xs">Add Notes Image Ref</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-slate-900 mb-1">Lecture Notes</h3>
+                        <p class="text-sm text-slate-500">Concise summaries for quick revision.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100">
+                    <!-- IMAGE REF: PYQ Icon/Image -->
+                    <div class="h-32 img-placeholder">
+                        <span class="text-xs">Add PYQ Image Ref</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-slate-900 mb-1">PYQ Papers</h3>
+                        <p class="text-sm text-slate-500">Previous 10 years exam archive.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100">
+                    <!-- IMAGE REF: Community Icon/Image -->
+                    <div class="h-32 img-placeholder">
+                        <span class="text-xs">Add Community Image Ref</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-slate-900 mb-1">Community</h3>
+                        <p class="text-sm text-slate-500">Peer support and discussion forums.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-100 ring-1 ring-brand-100">
+                    <!-- IMAGE REF: Special Mention Icon/Image -->
+                    <div class="h-32 img-placeholder bg-brand-50 border-brand-200 text-brand-400">
+                        <span class="text-xs text-brand-600">Add Special Mention Ref</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-brand-700 mb-1">Hall of Fame</h3>
+                        <p class="text-sm text-slate-500">Recognizing top contributors.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-10">Meet the Team</h2>
+            <div class="flex flex-wrap justify-center gap-8">
+                
+                <!-- Team Member 1 -->
+                <div class="w-full sm:w-64">
+                    <!-- IMAGE REF: Member 1 Photo -->
+                    <div class="w-32 h-32 mx-auto rounded-full img-placeholder mb-4 shadow-inner">
+                        <span class="text-xs text-center px-2">Add Member 1 Photo Ref</span>
+                    </div>
+                    <h3 class="font-bold text-slate-900">Founder Name</h3>
+                    <p class="text-brand-600 text-sm">Tech Lead</p>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="w-full sm:w-64">
+                    <!-- IMAGE REF: Member 2 Photo -->
+                    <div class="w-32 h-32 mx-auto rounded-full img-placeholder mb-4 shadow-inner">
+                         <span class="text-xs text-center px-2">Add Member 2 Photo Ref</span>
+                    </div>
+                    <h3 class="font-bold text-slate-900">Co-Founder Name</h3>
+                    <p class="text-brand-600 text-sm">Content Head</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Footer -->
+    <footer class="bg-white border-t border-gray-100 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="font-bold text-slate-900">BTechBook.in</span>
+                    <span class="text-slate-400 text-sm ml-2">© 2025</span>
+                </div>
+                <div class="flex gap-6 text-sm text-slate-500">
+                    <a href="index.html" class="hover:text-brand-600">Home</a>
+                    <a href="#" class="hover:text-brand-600">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand-600">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
