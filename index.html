@@ -22,115 +22,211 @@
       gtag('config', 'G-TZSPNESPG3');
     </script>
 
-    <style>
-        /* --- ADDED LOGO CSS --- */
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            /* Ensures no default link underline/color overrides */
-            color: inherit; 
-        }
+   <style>
+/* =======================
+   Resilient, mobile-first CSS
+   Drop-in replacement for your old logo/footer block
+   ======================= */
 
-        .brand-icon {
-            width: 40px;
-            height: 40px;
-            background-color: #0284c7; /* brand-600 Blue */
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.25rem;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.3);
-        }
+/* 1) Global safety */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-        .brand-logo:hover .brand-icon {
-            transform: rotate(12deg);
-        }
+/* Prevent small flex children from forcing parent's width */
+*:where(:not(html):not(body)) {
+  min-width: 0;
+}
 
-        .brand-text {
-            font-family: 'Open Sans', sans-serif;
-            font-weight: 800; /* Extra bold for logo look */
-            font-size: 1.5rem;
-            color: #0f172a; /* Slate 900 */
-            letter-spacing: -0.5px;
-        }
+/* 2) Images / icons / embeds */
+img, svg, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
 
-        .brand-highlight {
-            color: #0284c7;
-        }
+/* 3) Brand / logo — responsive and non-breaking */
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  max-width: 100%;
+  white-space: nowrap;
+}
 
-        /* --- FOOTER CSS --- */
-        .site-footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb; /* gray-200 */
-            margin-top: auto; /* Pushes footer to bottom if page is short */
-            width: 100%;
-            font-family: 'Open Sans', sans-serif; /* Matches your site font */
-        }
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  background-color: #0284c7;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.05rem;
+  transition: transform 0.28s ease;
+  box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.22);
+  flex-shrink: 0;
+}
 
-        .footer-container {
-            max-width: 80rem; /* Equivalent to max-w-7xl */
-            margin-left: auto;
-            margin-right: auto;
-            padding: 2rem 1rem;
-        }
+.brand-logo:hover .brand-icon {
+  transform: rotate(12deg);
+}
 
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* scales between 1rem (small) and 1.6rem (large) */
+.brand-text {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1rem, 4vw, 1.6rem);
+  line-height: 1;
+  color: #0f172a;
+  letter-spacing: -0.35px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-        /* Desktop view: row layout */
-        @media (min-width: 768px) {
-            .footer-content {
-                flex-direction: row;
-            }
-        }
+.brand-highlight { color: #0284c7; }
 
-        .footer-brand-section {
-            margin-bottom: 1rem;
-        }
+/* 4) Header container: allow wrapping so long logo + nav do not overflow */
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
 
-        @media (min-width: 768px) {
-            .footer-brand-section {
-                margin-bottom: 0;
-            }
-        }
+/* logo area should be allowed to shrink but keep icon readable */
+.header-container > .brand-logo {
+  flex: 0 1 auto;
+  max-width: 70%;
+}
 
-        .footer-brand-name {
-            font-weight: 700;
-            color: #0f172a; /* slate-900 */
-        }
+/* 5) Nav behavior — wrap on small screens */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+nav ul {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-wrap: wrap;
+}
+nav a {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  white-space: nowrap;
+}
 
-        .footer-copyright {
-            color: #94a3b8; /* slate-400 */
-            font-size: 0.875rem; /* text-sm */
-            margin-left: 0.5rem;
-        }
+/* 6) Footer: full-width background + centered inner content */
+.site-footer {
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  margin-top: auto;
+  font-family: 'Open Sans', sans-serif;
+  padding: 1rem 0;
+}
 
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.875rem; /* text-sm */
-            color: #64748b; /* slate-500 */
-        }
+/* inner container keeps content aligned with page */
+.footer-container {
+  width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.25rem 1rem;
+}
 
-        .footer-links a {
-            text-decoration: none;
-            color: inherit;
-            transition: color 0.2s ease;
-        }
+/* Footer content: stack on mobile, row on desktop */
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
 
-        .footer-links a:hover {
-            color: #0284c7; /* brand-600 blue */
-        }
-    </style>
+@media (min-width: 768px) {
+  .footer-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
+}
+
+/* Brand section inside footer */
+.footer-brand-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0;
+}
+
+.footer-brand-name {
+  font-weight: 700;
+  color: #0f172a;
+}
+.footer-copyright {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+}
+
+/* Footer links */
+.footer-links {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #64748b;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.footer-links a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.18s ease;
+}
+.footer-links a:hover {
+  color: #0284c7;
+}
+
+/* 7) Prevent embedded forms or iframes from forcing 800px width */
+iframe[src*="forms.app"],
+iframe[src*="formsapp"],
+div[id*="formsapp"],
+div[data-formsapp] {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 8) Tiny-screen polish */
+@media (max-width: 420px) {
+  .brand-icon { width: 36px; height: 36px; min-width: 36px; font-size: 0.95rem; }
+  .brand-text { font-size: clamp(0.95rem, 6vw, 1.2rem); }
+  nav { margin-top: 0.25rem; width: 100%; justify-content: center; }
+  .footer-container { padding: 1rem; }
+}
+</style>
+
 </head>
 <body>
 
