@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon | BTechBook.in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neon Hoops | BTechBook.in</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -19,7 +19,11 @@
                             500: '#0ea5e9', // Sky 500
                             600: '#0284c7', // Sky 600
                             orange: '#f97316',
+                            dark: '#0f172a'
                         }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
                     }
                 }
             }
@@ -27,239 +31,295 @@
     </script>
     <style>
         body {
-            background-color: #0f172a;
-            overflow: hidden; /* Prevent scrolling when playing */
-            touch-action: none; /* Prevent zoom/scroll on mobile */
+            background-color: #020617; /* Darker slate */
+            overflow: hidden;
+            touch-action: none; /* Critical for mobile game feel */
             user-select: none;
+            -webkit-user-select: none;
+            font-family: 'Outfit', sans-serif;
         }
 
         /* Neon Glow Text */
         .neon-text {
-            text-shadow: 0 0 10px rgba(14, 165, 233, 0.5), 
-                         0 0 20px rgba(14, 165, 233, 0.3);
+            text-shadow: 0 0 10px rgba(14, 165, 233, 0.6), 
+                         0 0 20px rgba(14, 165, 233, 0.4),
+                         0 0 30px rgba(14, 165, 233, 0.2);
+        }
+
+        .neon-orange {
+            text-shadow: 0 0 10px rgba(249, 115, 22, 0.6), 
+                         0 0 20px rgba(249, 115, 22, 0.4);
         }
 
         /* Game Canvas Container */
-        #game-container {
+        #game-wrapper {
             position: relative;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-            cursor: default; /* Changed from grab to default until started */
-            transition: transform 0.1s;
-        }
-        
-        #game-container.active {
-            cursor: grab;
-        }
-        #game-container.active:active {
-            cursor: grabbing;
-        }
-        
-        .shake {
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(14, 165, 233, 0.15);
+            overflow: hidden;
+            background: #1e293b;
         }
 
         canvas {
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            border-radius: 8px;
-            border: 2px solid #334155;
             display: block;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
         }
 
-        .score-board {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
         }
 
-        /* Start Screen Overlay */
-        #start-screen {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            transition: opacity 0.3s ease;
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
         }
-        #start-screen.hidden {
-            opacity: 0;
+
+        /* UI Overlays */
+        .ui-layer {
             pointer-events: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+        }
+
+        .interactive-layer {
+            pointer-events: auto;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
     </style>
 </head>
-<body class="text-white min-h-screen flex flex-col items-center justify-center p-4">
+<body class="text-white h-[100dvh] w-screen flex flex-col items-center justify-center p-2 sm:p-4">
 
-    <!-- Header Content -->
-    <div class="text-center mb-6 z-10 pointer-events-none">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-400 text-xs font-semibold mb-2">
+    <!-- Mobile Header (Compact) -->
+    <div class="text-center mb-2 sm:mb-6 z-10 pointer-events-none transition-all duration-300" id="header-container">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/50 border border-slate-800 text-slate-400 text-[10px] sm:text-xs font-semibold mb-1">
             <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
             BTechBook.in
         </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight neon-text text-white mb-1">
-            COMING SOON
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight neon-text text-white">
+            HOOPS
         </h1>
-        <p class="text-brand-500 font-bold text-sm tracking-widest uppercase">
-            Start Your Streak!
-        </p>
     </div>
 
     <!-- Game Area -->
-    <div id="game-container" class="relative group">
-        <canvas id="gameCanvas" width="500" height="400"></canvas>
+    <div id="game-wrapper" class="aspect-[4/5] sm:aspect-[4/3] relative">
+        <canvas id="gameCanvas"></canvas>
         
-        <!-- Scoreboard -->
-        <div class="absolute top-4 right-4 score-board rounded-lg p-3 text-right shadow-lg">
-            <div class="text-slate-400 text-xs uppercase tracking-wider font-semibold">Score</div>
-            <div class="text-brand-orange font-bold font-mono text-3xl leading-none" id="score">0</div>
-            
-            <div class="mt-2 pt-2 border-t border-slate-700">
-                <div class="text-slate-500 text-[10px] uppercase tracking-wider">High Score</div>
-                <div class="text-white font-mono text-sm" id="highScore">0</div>
+        <!-- In-Game UI -->
+        <div class="ui-layer p-4 flex justify-between items-start">
+            <!-- Streak Left -->
+            <div id="streak-container" class="opacity-0 transition-all duration-300 transform -translate-x-4">
+                <div class="flex flex-col items-start">
+                    <div class="flex items-center gap-2 text-orange-500 font-bold italic text-xl sm:text-2xl animate-pulse neon-orange">
+                        <i class="fas fa-fire"></i>
+                        <span id="streak-count">0</span>
+                    </div>
+                    <div class="text-[10px] text-orange-300 font-medium tracking-wide">COMBO!</div>
+                </div>
+            </div>
+
+            <!-- Score Right -->
+            <div class="glass-panel rounded-xl p-3 text-right shadow-lg transform transition-transform hover:scale-105">
+                <div class="text-slate-400 text-[10px] uppercase tracking-wider font-bold">Score</div>
+                <div class="text-brand-500 font-bold font-mono text-3xl sm:text-4xl leading-none neon-text" id="score">0</div>
+                
+                <div class="mt-1 pt-1 border-t border-slate-700/50">
+                    <div class="flex justify-end items-center gap-2 text-slate-500 text-[10px] font-mono">
+                        <span>BEST</span>
+                        <span class="text-white" id="highScore">0</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Streak Indicator -->
-        <div id="streak-container" class="absolute top-4 left-4 opacity-0 transition-opacity duration-300">
-            <div class="flex items-center gap-2 text-orange-500 font-bold italic text-xl animate-pulse">
-                <i class="fas fa-fire"></i>
-                <span id="streak-count">0</span> STREAK!
+        <!-- Start Screen Overlay -->
+        <div id="start-screen" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-900/80 backdrop-blur-md transition-opacity duration-300">
+            <div class="relative mb-6">
+                <div class="absolute inset-0 bg-brand-500 blur-xl opacity-20 animate-pulse rounded-full"></div>
+                <div class="w-24 h-24 bg-gradient-to-br from-brand-500 to-blue-700 rounded-full flex items-center justify-center shadow-2xl ring-4 ring-white/10 animate-bounce-slow relative z-10">
+                    <i class="fas fa-basketball-ball text-5xl text-white/90"></i>
+                </div>
             </div>
-            <div class="text-xs text-orange-300">2x Points Active</div>
-        </div>
-        
-        <!-- START SCREEN OVERLAY -->
-        <div id="start-screen" class="absolute inset-0 flex flex-col items-center justify-center rounded-lg z-20">
-            <div class="w-20 h-20 bg-brand-500/20 rounded-full flex items-center justify-center mb-6 ring-2 ring-brand-500/50 animate-bounce">
-                <i class="fas fa-basketball-ball text-4xl text-brand-500"></i>
-            </div>
-            <h2 class="text-3xl font-bold text-white mb-2 tracking-tight">HOOPS</h2>
-            <p class="text-slate-400 mb-8 text-sm">Drag to aim. Release to shoot.</p>
             
-            <button onclick="startGame()" class="group relative px-8 py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-full transition-all shadow-lg shadow-brand-500/30 hover:scale-105 active:scale-95">
-                <span class="relative z-10 flex items-center gap-2">
-                    START GAME <i class="fas fa-play text-xs"></i>
+            <h2 class="text-4xl font-bold text-white mb-2 tracking-tight">READY?</h2>
+            <p class="text-slate-300 mb-8 text-sm text-center max-w-[200px]">Drag anywhere to aim.<br>Release to shoot.</p>
+            
+            <button onclick="startGame()" class="group relative px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-full transition-all shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] hover:scale-105 active:scale-95">
+                <span class="relative z-10 flex items-center gap-3 text-lg">
+                    PLAY NOW <i class="fas fa-play text-xs"></i>
                 </span>
-                <div class="absolute inset-0 rounded-full bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </button>
+        </div>
+
+        <!-- Tutorials Hint (Visible first time) -->
+        <div id="tutorial-hint" class="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 text-xs font-mono hidden pointer-events-none">
+            <i class="fas fa-arrow-down"></i> DRAG DOWN TO POWER UP
         </div>
     </div>
 
-    <!-- Home Link -->
-    <a href="index.html" class="mt-8 px-6 py-2 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-sm transition-all flex items-center gap-2 z-10 border border-slate-700">
-        <i class="fas fa-arrow-left"></i> Return to Homepage
+    <!-- Footer -->
+    <a href="index.html" class="mt-6 px-5 py-2 rounded-full bg-slate-800/50 hover:bg-slate-700 text-slate-400 hover:text-white text-xs font-medium transition-all flex items-center gap-2 z-10 border border-slate-700/50">
+        <i class="fas fa-arrow-left"></i> Exit Game
     </a>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const wrapper = document.getElementById('game-wrapper');
+        
+        // UI Elements
         const scoreEl = document.getElementById('score');
         const highScoreEl = document.getElementById('highScore');
         const startScreen = document.getElementById('start-screen');
-        const gameContainer = document.getElementById('game-container');
         const streakContainer = document.getElementById('streak-container');
         const streakCountEl = document.getElementById('streak-count');
+        const tutorialHint = document.getElementById('tutorial-hint');
+        const headerContainer = document.getElementById('header-container');
 
-        // Game Variables
+        // Game State
         let gameActive = false;
+        let animationId;
         let score = 0;
         let highScore = localStorage.getItem('btech_hoops_highscore') || 0;
         let streak = 0;
-        let gravity = 0.6;
-        let friction = 0.99; 
-        let bounce = 0.7; 
+        
+        // Physics Constants (Calculated based on screen size in resize())
+        let gravity, friction, bounce; 
         
         highScoreEl.innerText = highScore;
 
-        // Ball State
+        // Entities
         let ball = {
-            x: 100,
-            y: 300,
-            radius: 18,
-            vx: 0,
-            vy: 0,
+            x: 0, y: 0, radius: 0,
+            vx: 0, vy: 0,
             rotation: 0,
             isDragging: false,
             isInAir: false,
-            dragStartX: 0,
-            dragStartY: 0
+            scored: false,
+            dragStartX: 0, dragStartY: 0,
+            dragCurrentX: 0, dragCurrentY: 0
         };
 
-        // Hoop State
         let hoop = {
-            x: 400,
-            y: 150,
-            baseX: 400,
-            width: 70,
-            rimHeight: 5,
-            backboardH: 80,
+            x: 0, y: 0,
+            baseX: 0,
+            width: 0,
+            backboardH: 0,
             moveSpeed: 0,
             moveRange: 0,
             time: 0
         };
 
-        // Effects
         let particles = [];
-        let netOffset = 0; 
-        let textPopup = null; 
+        let netPoints = []; // For cloth simulation
+        let textPopups = [];
 
-        // Start Game Function
-        function startGame() {
-            gameActive = true;
-            startScreen.classList.add('hidden');
-            gameContainer.classList.add('active');
-            score = 0;
-            streak = 0;
-            updateUI();
-            updateStreakUI();
-            resetBall();
-        }
-
-        // Resize Canvas
+        // --- Core Responsive Logic ---
         function resize() {
-            if (window.innerWidth < 550) {
-                canvas.width = window.innerWidth - 30;
-                canvas.height = 400;
-                hoop.baseX = canvas.width - 80;
-                ball.x = 60;
-                ball.y = canvas.height - 60;
-            } else {
-                canvas.width = 500;
-                canvas.height = 400;
-                hoop.baseX = 400;
-                ball.x = 100;
-                ball.y = 300;
-            }
-            hoop.x = hoop.baseX;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+            const rect = wrapper.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
 
-        // --- Input Handling ---
-        function getMousePos(evt) {
+            // Scale factors based on width
+            const scale = canvas.width / 500; // 500 is reference width
+
+            // Physics scaling
+            gravity = 0.6 * scale;
+            friction = 0.99;
+            bounce = 0.7;
+
+            // Entity Scaling
+            ball.radius = 18 * scale;
+            
+            hoop.width = 75 * scale;
+            hoop.backboardH = 85 * scale;
+            hoop.baseX = canvas.width * 0.8; // 80% to the right
+            hoop.y = canvas.height * 0.35; // 35% down
+            
+            // If ball is not in air, reset its position to start
+            if (!ball.isInAir) {
+                resetBallPos();
+            }
+
+            // Net Simulation Init
+            initNet();
+        }
+
+        function initNet() {
+            netPoints = [];
+            const rows = 4;
+            const cols = 6;
+            const topY = hoop.y;
+            const leftX = hoop.x - hoop.width/2 + 5;
+            const rightX = hoop.x + hoop.width/2 - 5;
+            const width = rightX - leftX;
+
+            for(let r=0; r<=rows; r++) {
+                let rowPoints = [];
+                for(let c=0; c<=cols; c++) {
+                    let x = leftX + (c/cols) * width;
+                    // Taper the net at the bottom
+                    let taper = (r/rows) * (width * 0.3);
+                    if(c < cols/2) x += taper;
+                    else x -= taper;
+                    
+                    let y = topY + (r * (12 * (canvas.width/500)));
+                    rowPoints.push({x: x, y: y, ox: x, oy: y, vx: 0, vy: 0});
+                }
+                netPoints.push(rowPoints);
+            }
+        }
+
+        function resetBallPos() {
+            ball.x = canvas.width * 0.2; // 20% from left
+            ball.y = canvas.height * 0.75; // 75% down
+            ball.vx = 0;
+            ball.vy = 0;
+            ball.isInAir = false;
+            ball.scored = false;
+            ball.rotation = 0;
+        }
+
+        // --- Input Handling (Mouse & Touch) ---
+        function getPos(evt) {
             const rect = canvas.getBoundingClientRect();
+            const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+            const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
             return {
-                x: (evt.clientX || evt.touches[0].clientX) - rect.left,
-                y: (evt.clientY || evt.touches[0].clientY) - rect.top
+                x: clientX - rect.left,
+                y: clientY - rect.top
             };
         }
 
         function handleStart(evt) {
-            if (!gameActive || ball.isInAir) return; 
-            const pos = getMousePos(evt);
-            const dist = Math.hypot(pos.x - ball.x, pos.y - ball.y);
-            if (dist < ball.radius * 3) {
-                ball.isDragging = true;
-                ball.dragStartX = pos.x;
-                ball.dragStartY = pos.y;
-            }
+            if (!gameActive || ball.isInAir) return;
+            // Allow drag from anywhere on screen for easier mobile use
+            const pos = getPos(evt);
+            ball.isDragging = true;
+            ball.dragStartX = pos.x;
+            ball.dragStartY = pos.y;
+            ball.dragCurrentX = pos.x;
+            ball.dragCurrentY = pos.y;
+            
+            tutorialHint.classList.remove('hidden');
         }
 
         function handleMove(evt) {
             if (!ball.isDragging) return;
-            const pos = getMousePos(evt);
+            const pos = getPos(evt);
             ball.dragCurrentX = pos.x;
             ball.dragCurrentY = pos.y;
         }
@@ -267,218 +327,312 @@
         function handleEnd(evt) {
             if (!ball.isDragging) return;
             ball.isDragging = false;
+            tutorialHint.classList.add('hidden');
+
+            const dx = ball.dragStartX - ball.dragCurrentX;
+            const dy = ball.dragStartY - ball.dragCurrentY;
+            
+            // Minimum drag threshold to prevent accidental taps
+            if (Math.hypot(dx, dy) < 20) return;
+
             ball.isInAir = true;
 
-            const pos = evt.type.includes('touch') ? {x: ball.dragCurrentX, y: ball.dragCurrentY} : getMousePos(evt);
-            
-            // Aiming & Power
-            const power = 0.16;
-            ball.vx = (ball.x - pos.x) * power;
-            ball.vy = (ball.y - pos.y) * power;
-            
-            // Cap max speed
-            const maxSpeed = 25;
+            // Power Multiplier (Adjusted for mobile feel)
+            const power = 0.18; 
+            ball.vx = dx * power;
+            ball.vy = dy * power;
+
+            // Cap Speed
+            const maxSpeed = canvas.width * 0.06;
             const speed = Math.hypot(ball.vx, ball.vy);
             if (speed > maxSpeed) {
                 const ratio = maxSpeed / speed;
                 ball.vx *= ratio;
                 ball.vy *= ratio;
             }
+            
+            // Add Spin based on x velocity
+            ball.spin = ball.vx * 0.05;
         }
 
-        gameContainer.addEventListener('mousedown', handleStart);
-        gameContainer.addEventListener('mousemove', handleMove);
+        // Event Listeners
+        canvas.addEventListener('mousedown', handleStart);
+        window.addEventListener('mousemove', handleMove);
         window.addEventListener('mouseup', handleEnd);
 
-        gameContainer.addEventListener('touchstart', handleStart, {passive: false});
-        gameContainer.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, {passive: false});
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleStart(e); }, {passive: false});
+        window.addEventListener('touchmove', (e) => { e.preventDefault(); handleMove(e); }, {passive: false});
         window.addEventListener('touchend', handleEnd);
 
-
         // --- Game Logic ---
-        function update() {
-            // Idle Animation when game not started
-            if (!gameActive) {
-                ball.y = (window.innerWidth < 550 ? canvas.height - 60 : 300) + Math.sin(Date.now() / 300) * 5;
-                // Just keep drawing loop running for particles/hoop
-                // Skip physics
-            }
+        function startGame() {
+            gameActive = true;
+            score = 0;
+            streak = 0;
+            startScreen.classList.add('opacity-0', 'pointer-events-none');
+            resetBallPos();
+            updateUI();
+            
+            // Shrink header on mobile when playing to give more room
+            headerContainer.classList.add('scale-75', 'origin-top');
+            
+            loop();
+        }
 
-            // Move Hoop (Difficulty scaling)
-            hoop.time += 0.02;
-            if (gameActive && score >= 5) {
-                hoop.moveRange = Math.min(50, (score - 4) * 10);
-                hoop.moveSpeed = Math.min(2, 0.5 + (score * 0.1));
-                hoop.x = hoop.baseX + Math.sin(hoop.time * hoop.moveSpeed) * hoop.moveRange;
+        function update() {
+            // Difficulty: Move Hoop
+            hoop.time += 0.02 + (score * 0.001);
+            if (score >= 3) {
+                let range = Math.min(canvas.width * 0.3, score * 10);
+                let speed = Math.min(3, 1 + score * 0.1);
+                hoop.x = hoop.baseX + Math.sin(hoop.time * speed) * (range * (canvas.width/500));
             } else {
                 hoop.x = hoop.baseX;
             }
 
-            let backboardX = hoop.x + hoop.width/2 + 5;
-            let backboardY = hoop.y - 50;
-            
-            // Ball Physics
-            if (gameActive && ball.isInAir) {
+            // Update Net Physics (Simple Spring)
+            updateNet();
+
+            if (ball.isInAir) {
                 ball.vy += gravity;
                 ball.vx *= friction;
                 ball.vy *= friction;
                 ball.x += ball.vx;
                 ball.y += ball.vy;
-                
                 ball.rotation += ball.vx * 0.1;
 
-                if (streak >= 3) {
-                    if (Math.random() > 0.3) {
-                        particles.push({
-                            x: ball.x + (Math.random()-0.5)*10,
-                            y: ball.y + (Math.random()-0.5)*10,
-                            vx: (Math.random()-0.5),
-                            vy: (Math.random()-0.5),
-                            life: 1.0,
-                            color: `hsl(${Math.random()*60 + 10}, 100%, 60%)`, 
-                            size: Math.random() * 6 + 2
-                        });
-                    }
-                }
-
-                // Floor Collision
+                // Floor
                 if (ball.y + ball.radius > canvas.height) {
                     ball.y = canvas.height - ball.radius;
                     ball.vy *= -bounce;
-                    ball.vx *= 0.8; 
+                    ball.vx *= 0.8;
                     
                     if (!ball.scored) {
-                        if (streak > 0) createTextPopup("Streak Lost", ball.x, ball.y - 40, '#94a3b8');
+                        if (streak > 0) createTextPopup("Streak Lost", canvas.width/2, canvas.height/2, '#94a3b8');
                         streak = 0;
                         updateStreakUI();
                     }
-
+                    
                     if (Math.abs(ball.vy) < 1 && Math.abs(ball.vx) < 1) {
                         resetBall();
                     }
                 }
 
-                // Wall Collisions
+                // Walls
                 if (ball.x - ball.radius < 0) { ball.x = ball.radius; ball.vx *= -bounce; }
                 if (ball.x + ball.radius > canvas.width) { ball.x = canvas.width - ball.radius; ball.vx *= -bounce; }
 
-                // Backboard Collision
-                if (ball.x + ball.radius > backboardX - 5 && 
-                    ball.x - ball.radius < backboardX && 
-                    ball.y > backboardY && 
-                    ball.y < backboardY + hoop.backboardH) {
-                        ball.vx *= -bounce;
-                        ball.x = backboardX - 5 - ball.radius;
-                }
-
-                // Rim (Left & Right)
-                const rimLeftX = hoop.x - hoop.width/2;
-                const rimRightX = hoop.x + hoop.width/2;
-                const rimY = hoop.y;
-
-                checkRimCollision(rimLeftX, rimY);
-                checkRimCollision(rimRightX, rimY);
-
-                // Scoring
-                if (ball.x > rimLeftX + 5 && ball.x < rimRightX - 5 &&
-                    ball.y > rimY && ball.y < rimY + 15 &&
-                    ball.vy > 0 && !ball.scored) {
-                    
-                    ball.scored = true;
-                    let points = streak >= 2 ? 2 : 1;
-                    if (streak >= 2) points = 2; 
-                    
-                    score += points;
-                    streak++;
-                    
-                    if (score > highScore) {
-                        highScore = score;
-                        localStorage.setItem('btech_hoops_highscore', highScore);
-                    }
-
-                    updateUI();
-                    updateStreakUI();
-                    spawnConfetti(hoop.x, hoop.y);
-                    netOffset = 20; 
-                    triggerScreenShake();
-                    let msg = points > 1 ? "FIRE! +2" : "SWISH! +1";
-                    createTextPopup(msg, hoop.x, hoop.y - 60, '#f97316');
+                // Hoop Collision
+                checkHoopCollisions();
+            } else {
+                // Idle Animation
+                if(!ball.isDragging) {
+                    ball.y = (canvas.height * 0.75) + Math.sin(Date.now() / 300) * 5;
                 }
             }
 
-            // Particles update
-            for(let i=particles.length-1; i>=0; i--) {
-                let p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
-                p.life -= 0.03;
-                if(p.life <= 0) particles.splice(i, 1);
-            }
-
-            // Text Popup update
-            if (textPopup) {
-                textPopup.y -= 1.5;
-                textPopup.opacity -= 0.03;
-                if(textPopup.opacity <= 0) textPopup = null;
-            }
-
-            if (netOffset > 0) netOffset *= 0.9;
+            // Particles
+            updateParticles();
+            
+            // Text Popups
+            updateTextPopups();
         }
 
-        function checkRimCollision(rx, ry) {
-            let dist = Math.hypot(ball.x - rx, ball.y - ry);
-            if (dist < ball.radius + 3) {
-                let nx = (ball.x - rx) / dist;
-                let ny = (ball.y - ry) / dist;
-                let speed = Math.hypot(ball.vx, ball.vy);
-                ball.vx = nx * speed * bounce;
-                ball.vy = ny * speed * bounce;
+        function updateNet() {
+            // Attach top row to hoop
+            const leftX = hoop.x - hoop.width/2 + 5;
+            const rightX = hoop.x + hoop.width/2 - 5;
+            const width = rightX - leftX;
+            const topY = hoop.y;
+
+            for(let r=0; r<netPoints.length; r++) {
+                for(let c=0; c<netPoints[r].length; c++) {
+                    let p = netPoints[r][c];
+                    
+                    // Top row is fixed to rim
+                    if(r === 0) {
+                        p.x = leftX + (c/(netPoints[r].length-1)) * width;
+                        p.y = topY;
+                        continue;
+                    }
+
+                    // Physics for net points
+                    p.vy += gravity * 0.5;
+                    p.vx *= 0.9;
+                    p.vy *= 0.9;
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // Spring back to original relative shape
+                    let targetX = (netPoints[0][c].x); 
+                    // Taper logic
+                    let taper = (r/netPoints.length) * (width * 0.4);
+                    if(c < netPoints[r].length/2) targetX += taper;
+                    else targetX -= taper;
+
+                    let targetY = netPoints[r-1][c].y + (12 * (canvas.width/500));
+                    
+                    p.x += (targetX - p.x) * 0.1;
+                    p.y += (targetY - p.y) * 0.1;
+
+                    // Collision with ball
+                    let dx = ball.x - p.x;
+                    let dy = ball.y - p.y;
+                    let dist = Math.hypot(dx, dy);
+                    if (dist < ball.radius && ball.isInAir) {
+                        let force = (ball.radius - dist) / dist;
+                        p.vx -= dx * force * 0.5;
+                        p.vy -= dy * force * 0.5;
+                        // Slow ball slightly
+                        ball.vx *= 0.99;
+                        ball.vy *= 0.99;
+                    }
+                }
             }
+        }
+
+        function checkHoopCollisions() {
+            let backboardX = hoop.x + hoop.width/2 + 8;
+            let backboardY = hoop.y - (hoop.backboardH * 0.6);
+
+            // Backboard
+            if (ball.x + ball.radius > backboardX - 5 && 
+                ball.x - ball.radius < backboardX && 
+                ball.y > backboardY && 
+                ball.y < backboardY + hoop.backboardH) {
+                    ball.vx *= -bounce;
+                    ball.x = backboardX - 5 - ball.radius;
+            }
+
+            // Rims
+            const rimLeftX = hoop.x - hoop.width/2;
+            const rimRightX = hoop.x + hoop.width/2;
+            const rimY = hoop.y;
+            const rimRadius = 4;
+
+            // Rim Logic
+            const checkRim = (rx, ry) => {
+                let dist = Math.hypot(ball.x - rx, ball.y - ry);
+                if (dist < ball.radius + rimRadius) {
+                    let nx = (ball.x - rx) / dist;
+                    let ny = (ball.y - ry) / dist;
+                    let speed = Math.hypot(ball.vx, ball.vy);
+                    // Add some chaos
+                    ball.vx = nx * speed * bounce;
+                    ball.vy = ny * speed * bounce;
+                    
+                    // Push out to prevent sticking
+                    ball.x = rx + nx * (ball.radius + rimRadius + 1);
+                    ball.y = ry + ny * (ball.radius + rimRadius + 1);
+                }
+            }
+
+            checkRim(rimLeftX, rimY);
+            checkRim(rimRightX, rimY);
+
+            // Scoring
+            if (ball.x > rimLeftX + 5 && ball.x < rimRightX - 5 &&
+                ball.y > rimY && ball.y < rimY + 15 &&
+                ball.vy > 0 && !ball.scored) {
+                
+                ball.scored = true;
+                handleScore();
+            }
+        }
+
+        function handleScore() {
+            let points = streak >= 2 ? 2 : 1;
+            streak++;
+            score += points;
+            
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('btech_hoops_highscore', highScore);
+            }
+
+            // Visuals
+            spawnConfetti(hoop.x, hoop.y);
+            triggerScreenShake();
+            
+            // Text
+            let msgs = ["SWISH!", "CLEAN!", "NICE!", "BUCKET!"];
+            let msg = streak >= 3 ? "ON FIRE! +2" : msgs[Math.floor(Math.random()*msgs.length)] + " +1";
+            createTextPopup(msg, hoop.x, hoop.y - 50, streak >= 3 ? '#f97316' : '#fff');
+
+            updateUI();
+            updateStreakUI();
         }
 
         function resetBall() {
-            ball.isInAir = false;
-            ball.scored = false;
-            ball.vx = 0;
-            ball.vy = 0;
-            ball.rotation = 0;
+            // Animate back to start
+            let startX = canvas.width * 0.2;
+            let startY = canvas.height * 0.75;
             
-            let startX = window.innerWidth < 550 ? 60 : 100;
-            let startY = window.innerWidth < 550 ? canvas.height - 60 : 300;
-
+            ball.isInAir = false;
+            ball.vx = 0; ball.vy = 0;
+            
+            // Simple tween
+            let t = 0;
+            let ox = ball.x;
+            let oy = ball.y;
+            
             let interval = setInterval(() => {
-                ball.x += (startX - ball.x) * 0.15;
-                ball.y += (startY - ball.y) * 0.15;
-                if (Math.abs(ball.x - startX) < 1 && Math.abs(ball.y - startY) < 1) {
-                    ball.x = startX;
-                    ball.y = startY;
+                t += 0.05;
+                ball.x = ox + (startX - ox) * t;
+                ball.y = oy + (startY - oy) * t;
+                
+                if (t >= 1) {
                     clearInterval(interval);
+                    resetBallPos();
                 }
             }, 16);
         }
 
         function spawnConfetti(x, y) {
-            for(let i=0; i<20; i++) {
+            for(let i=0; i<30; i++) {
                 particles.push({
                     x: x, y: y,
-                    vx: (Math.random() - 0.5) * 8,
-                    vy: (Math.random() - 0.5) * 8,
-                    life: 1.2,
-                    color: `hsl(${Math.random()*360}, 70%, 50%)`,
-                    size: Math.random() * 4 + 2
+                    vx: (Math.random() - 0.5) * 10,
+                    vy: (Math.random() - 0.5) * 10,
+                    life: 1.5,
+                    color: `hsl(${Math.random()*50 + 10}, 100%, 60%)`, // Orange/Yellows
+                    gravity: 0.2,
+                    size: Math.random() * 5 + 2
                 });
             }
         }
 
         function createTextPopup(text, x, y, color) {
-            textPopup = { text: text, x: x, y: y, opacity: 1, color: color };
+            textPopups.push({
+                text: text, x: x, y: y, color: color, life: 1.0, vy: -2
+            });
         }
 
         function triggerScreenShake() {
-            gameContainer.classList.add('shake');
-            setTimeout(() => {
-                gameContainer.classList.remove('shake');
-            }, 500);
+            wrapper.classList.remove('shake');
+            void wrapper.offsetWidth; // trigger reflow
+            wrapper.classList.add('shake');
+        }
+
+        // --- Update Helpers ---
+        function updateParticles() {
+            for(let i=particles.length-1; i>=0; i--) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += p.gravity;
+                p.life -= 0.02;
+                if(p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function updateTextPopups() {
+            for(let i=textPopups.length-1; i>=0; i--) {
+                let p = textPopups[i];
+                p.y += p.vy;
+                p.life -= 0.02;
+                if(p.life <= 0) textPopups.splice(i, 1);
+            }
         }
 
         function updateUI() {
@@ -489,89 +643,120 @@
         function updateStreakUI() {
             streakCountEl.innerText = streak;
             if (streak >= 3) {
-                streakContainer.style.opacity = '1';
+                streakContainer.classList.remove('opacity-0', '-translate-x-4');
+                streakContainer.classList.add('opacity-100', 'translate-x-0');
             } else {
-                streakContainer.style.opacity = '0';
+                streakContainer.classList.add('opacity-0', '-translate-x-4');
+                streakContainer.classList.remove('opacity-100', 'translate-x-0');
             }
         }
 
         // --- Drawing ---
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 1. Trajectory Line
-            if (ball.isDragging && ball.dragCurrentX) {
+            
+            // 0. Trajectory Guide (Aim Assist)
+            if (ball.isDragging) {
                 ctx.beginPath();
                 ctx.moveTo(ball.x, ball.y);
-                let dx = ball.x - ball.dragCurrentX;
-                let dy = ball.y - ball.dragCurrentY;
                 
                 let simX = ball.x;
                 let simY = ball.y;
-                let simVx = dx * 0.16;
-                let simVy = dy * 0.16;
+                let dx = ball.dragStartX - ball.dragCurrentX;
+                let dy = ball.dragStartY - ball.dragCurrentY;
                 
-                ctx.beginPath();
+                // Max pull
+                let pullDist = Math.hypot(dx, dy);
+                let maxPull = 200;
+                if(pullDist > maxPull) {
+                    let ratio = maxPull / pullDist;
+                    dx *= ratio;
+                    dy *= ratio;
+                }
+
+                let simVx = dx * 0.18; // Match power
+                let simVy = dy * 0.18;
+                
                 ctx.moveTo(simX, simY);
-                for(let i=0; i<15; i++) {
+                for(let i=0; i<12; i++) { // Predict 12 frames
                     simX += simVx;
                     simY += simVy;
                     simVy += gravity;
                     ctx.lineTo(simX, simY);
                 }
                 
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-                ctx.lineWidth = 3;
-                ctx.setLineDash([5, 5]);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 4;
+                ctx.setLineDash([8, 8]);
                 ctx.stroke();
                 ctx.setLineDash([]);
-                
+
+                // Draw Pull Line
                 ctx.beginPath();
-                ctx.arc(ball.x, ball.y, ball.radius + 5, 0, Math.PI*2);
-                ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(1, Math.hypot(dx,dy)/200)})`;
+                ctx.moveTo(ball.x, ball.y);
+                ctx.lineTo(ball.x - dx, ball.y - dy);
+                ctx.strokeStyle = 'rgba(14, 165, 233, 0.4)'; // Brand blue
+                ctx.lineWidth = 2;
                 ctx.stroke();
+                
+                // Drag Cursor Circle
+                ctx.beginPath();
+                ctx.arc(ball.x - dx, ball.y - dy, 10, 0, Math.PI*2);
+                ctx.fillStyle = 'rgba(14, 165, 233, 0.8)';
+                ctx.fill();
             }
 
-            let backboardX = hoop.x + hoop.width/2 + 5;
-            let backboardY = hoop.y - 50;
+            // 1. Backboard
+            let backboardX = hoop.x + hoop.width/2 + 8;
+            let backboardY = hoop.y - (hoop.backboardH * 0.6);
+            
+            // Pole
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(backboardX + 5, backboardY + 20, 10, 200);
 
-            // 2. Backboard
-            ctx.fillStyle = '#cbd5e1'; 
+            // Board
+            ctx.fillStyle = '#cbd5e1';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = 'rgba(255,255,255,0.2)';
             ctx.fillRect(backboardX, backboardY, 8, hoop.backboardH);
+            ctx.shadowBlur = 0;
+
+            // Target Box on Board
             ctx.strokeStyle = '#ef4444';
             ctx.lineWidth = 3;
-            ctx.strokeRect(backboardX + 2, backboardY + 45, 6, 4);
+            ctx.strokeRect(backboardX + 2, backboardY + hoop.backboardH - 35, 6, 25);
 
-            // 3. Net (Back)
+            // 2. Net (Points)
             ctx.beginPath();
-            let netTopY = hoop.y;
-            let netBotY = hoop.y + 45 + (netOffset * 0.8); 
-            let netL = hoop.x - hoop.width/2 + 5;
-            let netR = hoop.x + hoop.width/2 - 5;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.lineWidth = 2;
             
-            ctx.moveTo(netL, netTopY);
-            ctx.quadraticCurveTo((netL+netR)/2, netBotY, netR, netTopY);
-            
-            for(let i=1; i<=4; i++) {
-               let y = netTopY + (i * 10) + (netOffset * 0.15 * i);
-               let inset = i * 2;
-               ctx.moveTo(netL + inset, y);
-               ctx.lineTo(netR - inset, y);
+            for(let r=0; r<netPoints.length; r++) {
+                // Horizontal lines
+                for(let c=0; c<netPoints[r].length-1; c++) {
+                    ctx.moveTo(netPoints[r][c].x, netPoints[r][c].y);
+                    ctx.lineTo(netPoints[r][c+1].x, netPoints[r][c+1].y);
+                }
+                // Vertical lines
+                if (r < netPoints.length - 1) {
+                    for(let c=0; c<netPoints[r].length; c++) {
+                        ctx.moveTo(netPoints[r][c].x, netPoints[r][c].y);
+                        ctx.lineTo(netPoints[r+1][c].x, netPoints[r+1][c].y);
+                    }
+                }
             }
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.lineWidth = 1.5;
             ctx.stroke();
 
-            // 4. Rim (Back)
+            // 3. Rim (Back half)
             ctx.beginPath();
-            ctx.strokeStyle = '#dc2626'; 
-            ctx.lineWidth = 5;
+            ctx.strokeStyle = '#b91c1c'; 
+            ctx.lineWidth = 6;
             ctx.lineCap = 'round';
             ctx.moveTo(hoop.x - hoop.width/2, hoop.y);
             ctx.lineTo(hoop.x + hoop.width/2, hoop.y); 
             ctx.stroke();
 
-            // 5. Particles
+            // 4. Particles
             for(let p of particles) {
                 ctx.fillStyle = p.color;
                 ctx.globalAlpha = p.life;
@@ -581,51 +766,71 @@
             }
             ctx.globalAlpha = 1;
 
-            // 6. Ball
+            // 5. Ball
             ctx.save();
             ctx.translate(ball.x, ball.y);
             ctx.rotate(ball.rotation);
 
+            // Fire Effect if streak
+            if (streak >= 3) {
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = '#f97316';
+            }
+
             ctx.beginPath();
             ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
-            let gradient = ctx.createRadialGradient(-5, -5, 2, 0, 0, ball.radius);
-            gradient.addColorStop(0, streak >= 3 ? '#fed7aa' : '#fb923c'); 
-            gradient.addColorStop(1, streak >= 3 ? '#ea580c' : '#c2410c'); 
+            let gradient = ctx.createRadialGradient(-ball.radius/3, -ball.radius/3, ball.radius/5, 0, 0, ball.radius);
+            gradient.addColorStop(0, streak >= 3 ? '#ffedd5' : '#fb923c'); 
+            gradient.addColorStop(1, streak >= 3 ? '#c2410c' : '#ea580c'); 
             ctx.fillStyle = gradient;
             ctx.fill();
             
-            ctx.strokeStyle = '#7c2d12'; 
-            ctx.lineWidth = 2.5;
+            // Ball Lines
+            ctx.strokeStyle = 'rgba(67, 20, 7, 0.6)'; 
+            ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(-ball.radius, 0); ctx.lineTo(ball.radius, 0); 
             ctx.moveTo(0, -ball.radius); ctx.lineTo(0, ball.radius); 
-            ctx.arc(0, 0, ball.radius * 0.6, 0, Math.PI*2);
             ctx.stroke();
             
             ctx.restore();
+            ctx.shadowBlur = 0;
 
-            // 7. Rim Connection
+            // 6. Rim (Front Connection)
             ctx.beginPath();
             ctx.strokeStyle = '#ef4444';
-            ctx.lineWidth = 4;
+            ctx.lineWidth = 5;
             ctx.moveTo(hoop.x + hoop.width/2, hoop.y);
             ctx.lineTo(backboardX, hoop.y - 5);
             ctx.stroke();
 
-            // 8. Text Popup
-            if (textPopup) {
-                ctx.fillStyle = textPopup.color;
-                ctx.globalAlpha = textPopup.opacity;
-                ctx.font = "bold 28px 'Outfit', sans-serif";
-                ctx.fillText(textPopup.text, hoop.x - 60, textPopup.y);
-                ctx.globalAlpha = 1;
+            // 7. Text Popups
+            for(let p of textPopups) {
+                ctx.save();
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life;
+                ctx.font = `bold ${30 * (canvas.width/500)}px 'Outfit', sans-serif`;
+                ctx.textAlign = "center";
+                ctx.shadowColor = "black";
+                ctx.shadowBlur = 4;
+                ctx.fillText(p.text, p.x, p.y);
+                ctx.restore();
             }
-
-            requestAnimationFrame(draw);
         }
 
-        setInterval(update, 16); 
-        draw(); 
+        function loop() {
+            if(gameActive) requestAnimationFrame(loop);
+            update();
+            draw();
+        }
+
+        // Init
+        window.addEventListener('resize', resize);
+        resize();
+        
+        // Initial Draw (Background)
+        draw();
+
     </script>
 </body>
 </html>
