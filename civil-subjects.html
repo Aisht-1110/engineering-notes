@@ -4,368 +4,653 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Civil Engineering Subjects</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  
+  <!-- Google reCAPTCHA Script -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  
   <style>
-    /* CSS Variables for easy theme management */
-    :root {
-      --primary-color: #2676c7;
-      --primary-hover-color: #1a5a96;
-      --background-color: #f7f7f9;
-      --card-background: #ffffff;
-      --text-color: #2c3e50;
-      --subtle-text-color: #7f8c8d;
-      --border-color: #e0e0e0;
-      --card-accent-color: #4a90e2;
-    }
-
-    body {
-      font-family: 'Open Sans', Arial, sans-serif;
-      background: var(--background-color);
-      color: var(--text-color);
+    body { 
+      font-family: 'Open Sans', Arial, sans-serif; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
       margin: 0;
-      padding: 0;
+      padding: 20px;
     }
-
+    
     .subject-container {
-      max-width: 680px;
-      margin: 40px auto;
-      padding: 40px;
-      background: var(--card-background);
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(44, 62, 80, 0.08);
+      max-width: 650px; 
+      background: #fff; 
+      border-radius: 16px;
+      margin: 40px auto 0 auto; 
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      padding: 45px 35px 35px 35px;
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 35px;
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.5em;
-      color: var(--text-color);
+    
+    h1 { 
+      text-align: center; 
+      margin-bottom: 35px; 
+      font-family: 'DM Serif Text', serif;
+      color: #2c3e50;
+      font-size: 2rem;
     }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 25px;
-      color: var(--subtle-text-color);
+    
+    ul { padding: 0; list-style: none; }
+    
+    li {
+      margin: 12px 0;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 16px 20px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    li:hover {
+      transform: translateX(5px);
+      border-color: #667eea;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    li:first-child {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      font-weight: bold;
+    }
+    
+    li a.subject-link {
       text-decoration: none;
-      font-size: 0.9em;
+      color: #2c3e50;
       font-weight: 500;
+      cursor: pointer;
+      flex-grow: 1;
       transition: color 0.3s ease;
     }
-
-    .back-link:hover {
-      color: var(--primary-color);
+    
+    li a.subject-link:hover {
+      color: #667eea;
     }
-
-    /* --- Search Bar Styles --- */
-    .search-container {
-      position: relative;
-      margin-bottom: 30px;
-    }
-
-    #search-box {
-      width: 100%;
-      padding: 12px 15px 12px 45px; /* Make space for icon */
+    
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #2c3e50;
+      text-decoration: none;
       font-size: 1em;
+      font-weight: 600;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 8px;
-      border: 1px solid var(--border-color);
-      box-sizing: border-box; /* Important for padding and width */
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    #search-box:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+      transition: all 0.3s ease;
     }
     
-    .search-icon {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 18px;
-        height: 18px;
-        fill: var(--subtle-text-color);
+    .back-link:hover {
+      background: #fff;
+      transform: translateX(-5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    /* --- Subject List Styles --- */
-    #subject-list {
-      padding: 0;
-      list-style: none;
-      margin: 0;
+    /* Verified Badge */
+    .verified-badge {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+      z-index: 1000;
+      display: none;
+      animation: slideInRight 0.5s ease;
     }
 
-    .subject-item {
-      margin-bottom: 12px;
-      background: var(--card-background);
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* ========================================
+       Enhanced reCAPTCHA Modal Styles
+       ======================================== */
+    #captchaOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      z-index: 9998;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #captchaModal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      z-index: 9999;
+      max-width: 500px;
+      width: 90%;
+      padding: 45px 35px;
+      text-align: center;
+      animation: modalBounce 0.5s ease;
+      border: 3px solid #667eea;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes modalBounce {
+      0% {
+        transform: translate(-50%, -50%) scale(0.7);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .verification-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: -45px -35px 30px -35px;
+      padding: 30px;
+      border-radius: 20px 20px 0 0;
+      color: white;
+    }
+
+    .verification-icon {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    #captchaModal h2 {
+      color: white;
+      margin: 10px 0 5px 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    #captchaModal .modal-subtitle {
+      color: #667eea;
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin: 20px 0 10px 0;
+      padding: 10px;
+      background: rgba(102, 126, 234, 0.1);
       border-radius: 8px;
-      border: 1px solid var(--border-color);
-      border-left: 5px solid var(--card-accent-color);
-      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     }
-    .subject-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 12px rgba(44, 62, 80, 0.12);
+
+    #captchaModal p {
+      color: #555;
+      margin-bottom: 25px;
+      font-size: 1rem;
+      line-height: 1.6;
     }
-    
-    .subject-item a {
+
+    .captcha-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 25px 0;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 25px;
+    }
+
+    #proceedBtn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #proceedBtn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    #proceedBtn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    #proceedBtn:disabled {
+      background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    #proceedBtn:not(:disabled):hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    #cancelBtn {
+      background: transparent;
+      color: #6c757d;
+      border: 2px solid #6c757d;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+
+    #cancelBtn:hover {
+      background: #6c757d;
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .security-badge {
       display: flex;
       align-items: center;
-      padding: 18px 20px;
-      text-decoration: none;
-      color: var(--text-color);
-    }
-
-    .subject-code {
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 12px;
+      background: rgba(40, 167, 69, 0.1);
+      border-radius: 8px;
+      color: #28a745;
+      font-size: 0.9rem;
       font-weight: 600;
-      color: var(--primary-color);
-      margin-right: 15px;
-      min-width: 80px; /* Aligns the names */
-    }
-    
-    .subject-name {
-      font-weight: 500;
-      flex-grow: 1; /* Takes up remaining space */
-    }
-    
-    .subject-item a:hover .subject-name {
-      color: var(--primary-hover-color);
     }
 
-    #no-results {
-        text-align: center;
-        padding: 20px;
-        color: var(--subtle-text-color);
-        display: none; /* Hidden by default */
+    /* Loading state */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
     }
 
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      body {
+        padding: 10px;
+      }
+
+      .subject-container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      #captchaModal {
+        padding: 35px 20px;
+        max-width: 95%;
+      }
+
+      .verification-header {
+        margin: -35px -20px 25px -20px;
+        padding: 25px 15px;
+      }
+      
+      #captchaModal h2 {
+        font-size: 1.4rem;
+      }
+
+      .modal-subtitle {
+        font-size: 1.1rem !important;
+      }
+      
+      .modal-buttons {
+        flex-direction: column;
+      }
+      
+      #proceedBtn, #cancelBtn {
+        width: 100%;
+      }
+
+      .verified-badge {
+        top: 10px;
+        right: 10px;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Verified Badge (shows after first verification) -->
+  <div class="verified-badge" id="verifiedBadge">
+    ✓ Verified Session
+  </div>
 
   <div class="subject-container">
-    <a href="index.html" class="back-link">&larr; Back to Departments</a>
-    <h1>Civil Engineering Subjects</h1>
-
-    <div class="search-container">
-      <svg class="search-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
-      <input type="search" id="search-box" placeholder="Search by name or code (e.g., 'Surveying' or 'CE205')...">
-    </div>
-
-    <ul id="subject-list">
-      <li class="subject-item">
-        <a href="https://www.vssut.ac.in/lecture_notes/lecture1423904717.pdf" target="_blank">
-          <span class="subject-code">CE101</span>
-          <span class="subject-name">Engineering Mechanics</span>
-        </a>
+    <a href="index.html" class="back-link">← Back to Departments</a>
+    <h1>Basic Subjects of Civil Engineering</h1>
+    <ul>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-0YourCivilEngineeringBooksLinkHere">CIVIL ENGINEERING BOOKS</a>
       </li>
-      <li class="subject-item">
-        <a href="https://esenotes.com/building-materials-pdf-handwritten-notes-by-jaspal-sir-building-materials-and-construction/" target="_blank">
-          <span class="subject-code">CE102</span>
-          <span class="subject-name">Building Materials and Construction</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-1YourEngineeringMechanicsLinkHere">Engineering Mechanics / Applied Mechanics</a>
       </li>
-      <li class="subject-item">
-        <a href="https://www.dpgpolytechnic.com/downloads/files/n5c4588acd4d76.pdf" target="_blank">
-          <span class="subject-code">CE201</span>
-          <span class="subject-name">Mechanics of Solids-I (Strength of Materials)</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-2YourStrengthOfMaterialsLinkHere">Strength of Materials (Solid Mechanics)</a>
       </li>
-      <li class="subject-item">
-        <a href="https://esenotes.com/fluid-mechanics-notes-pdf-by-jaspal-sir/" target="_blank">
-          <span class="subject-code">CE203</span>
-          <span class="subject-name">Mechanics of Fluids-I</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-3YourFluidMechanicsLinkHere">Fluid Mechanics</a>
       </li>
-      <li class="subject-item">
-        <a href="https://srinix.org/lecture_notes/survey_Eng.pdf" target="_blank">
-          <span class="subject-code">CE205</span>
-          <span class="subject-name">Surveying-I</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-4YourSurveyingLinkHere">Surveying</a>
       </li>
-      <li class="subject-item">
-        <a href="https://newtondesk.com/geotechnical-engineering-handwritten-study-notes/" target="_blank">
-          <span class="subject-code">CE207</span>
-          <span class="subject-name">Geotechnical Engineering-I</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-5YourBuildingMaterialsLinkHere">Building Materials and Construction</a>
       </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE209</span>
-          <span class="subject-name">Concrete Technology</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-6YourStructuralAnalysisLinkHere">Structural Analysis</a>
       </li>
-       <li class="subject-item">
-        <a href="https://www.dpgpolytechnic.com/downloads/files/n5c4588acd4d76.pdf" target="_blank">
-          <span class="subject-code">CE202</span>
-          <span class="subject-name">Mechanics of Solids-II (Strength of Materials)</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-7YourConcreteTechnologyLinkHere">Concrete Technology</a>
       </li>
-      <li class="subject-item">
-        <a href="https://esenotes.com/fluid-mechanics-notes-pdf-by-jaspal-sir/" target="_blank">
-          <span class="subject-code">CE204</span>
-          <span class="subject-name">Mechanics of Fluids-II</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-8YourGeotechnicalEngineeringLinkHere">Geotechnical Engineering (Soil Mechanics & Foundation Engineering)</a>
       </li>
-      <li class="subject-item">
-        <a href="https://srinix.org/lecture_notes/survey_Eng.pdf" target="_blank">
-          <span class="subject-code">CE206</span>
-          <span class="subject-name">Surveying-II</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-9YourTransportationEngineeringLinkHere">Transportation Engineering</a>
       </li>
-      <li class="subject-item">
-        <a href="https://newtondesk.com/geotechnical-engineering-handwritten-study-notes/" target="_blank">
-          <span class="subject-code">CE208</span>
-          <span class="subject-name">Geotechnical Engineering-II</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-10YourEnvironmentalEngineeringLinkHere">Environmental Engineering</a>
       </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE210</span>
-          <span class="subject-name">Environmental Engineering-I</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-11YourWaterResourcesEngineeringLinkHere">Water Resources Engineering (Hydrology & Irrigation)</a>
       </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE301</span>
-          <span class="subject-name">Environmental Engineering-II</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-12YourDesignRCStructuresLinkHere">Design of Reinforced Concrete Structures</a>
       </li>
-      <li class="subject-item">
-        <a href="https://esenotes.com/pdf-structure-analysis-notes-by-jaspal-sir/" target="_blank">
-          <span class="subject-code">CE303</span>
-          <span class="subject-name">Structural Analysis-I</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-13YourDesignSteelStructuresLinkHere">Design of Steel Structures</a>
       </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE305</span>
-          <span class="subject-name">Concrete Structures-I</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-14YourConstructionManagementLinkHere">Construction Management</a>
       </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE307</span>
-          <span class="subject-name">Steel Structures-I</span>
-        </a>
+      <li>
+        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-15YourEstimatingCostingLinkHere">Estimating and Costing</a>
       </li>
-      <li class="subject-item">
-        <a href="https://esenotes.com/pdf-hydraulic-machines-notes-by-jaspal-sir/" target="_blank">
-          <span class="subject-code">CE309</span>
-          <span class="subject-name">Hydraulic Machinery</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="https://www.dpgpolytechnic.com/downloads/files/n5c4588acd4d76.pdf" target="_blank">
-          <span class="subject-code">CE311</span>
-          <span class="subject-name">Advanced Strength of Materials</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="https://esenotes.com/pdf-structure-analysis-notes-by-jaspal-sir/" target="_blank">
-          <span class="subject-code">CE302</span>
-          <span class="subject-name">Structural Analysis-II</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE304</span>
-          <span class="subject-name">Transportation Engineering-I</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE306</span>
-          <span class="subject-name">Concrete Structures-II</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE308</span>
-          <span class="subject-name">Steel Structures-II</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE310</span>
-          <span class="subject-name">Water Resources Engineering</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="https://esenotes.com/pdf-structure-analysis-notes-by-jaspal-sir/" target="_blank">
-          <span class="subject-code">CE401</span>
-          <span class="subject-name">Matrix Methods of Structural Analysis</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE403</span>
-          <span class="subject-name">Transportation Engineering-II</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="https://esenotes.com/pdf-hydraulic-machines-notes-by-jaspal-sir/" target="_blank">
-          <span class="subject-code">CE405</span>
-          <span class="subject-name">Irrigation and Hydraulic Structures</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE402</span>
-          <span class="subject-name">Prestressed Concrete Structures</span>
-        </a>
-      </li>
-      <li class="subject-item">
-        <a href="#" target="_blank">
-          <span class="subject-code">CE498</span>
-          <span class="subject-name">Project Work</span>
-        </a>
-      </li>
-      <li id="no-results" style="display: none;">No subjects found.</li>
     </ul>
   </div>
 
+  <!-- reCAPTCHA Modal -->
+  <div id="captchaOverlay"></div>
+  <div id="captchaModal">
+    <div class="verification-header">
+      <div class="verification-icon">🔐</div>
+      <h2>Security Verification</h2>
+    </div>
+    
+    <p class="modal-subtitle" id="subjectName">Engineering Notes</p>
+    <p>To protect our educational resources and ensure quality access, please verify you're human. This verification is required only once per session.</p>
+    
+    <div class="captcha-wrapper">
+      <div class="g-recaptcha" data-sitekey="6LdTwCUsAAAAACXNteicLNwQTdwbNfULdq7lE9Lx" data-callback="onCaptchaSuccess" data-expired-callback="onCaptchaExpired"></div>
+    </div>
+    
+    <div class="modal-buttons">
+      <button id="proceedBtn" disabled>
+        <span id="btnText">Verify & Continue</span>
+      </button>
+      <button id="cancelBtn">Cancel</button>
+    </div>
+
+    <div class="security-badge">
+      <span>🛡️</span>
+      <span>Your privacy is protected</span>
+    </div>
+  </div>
+
   <script>
-    // --- JavaScript for Live Search Functionality ---
+    // ==========================================
+    // CONFIGURATION
+    // ==========================================
+    const SESSION_KEY = 'btechbook_verified';
+    const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-    document.getElementById('search-box').addEventListener('keyup', function() {
-      // 1. Get user input and convert to lowercase for case-insensitive search
-      let filter = this.value.toLowerCase();
-      
-      // 2. Get all the subject list items
-      let subjectList = document.getElementById('subject-list');
-      let items = subjectList.getElementsByClassName('subject-item');
-      
-      // 3. Get the 'no results' message element
-      let noResults = document.getElementById('no-results');
-      
-      let visibleItemsCount = 0;
+    // Global variables
+    let targetDriveUrl = '';
+    let captchaVerified = false;
 
-      // 4. Loop through all the subject items
-      for (let i = 0; i < items.length; i++) {
-        let a = items[i].getElementsByTagName('a')[0];
-        // Get the full text content of the link (code + name)
-        let textValue = a.textContent || a.innerText;
+    // ==========================================
+    // SESSION MANAGEMENT
+    // ==========================================
+    
+    // Check if user is already verified
+    function isSessionVerified() {
+      const verificationData = localStorage.getItem(SESSION_KEY);
+      if (!verificationData) return false;
 
-        // 5. Check if the item's text includes the filter text
-        if (textValue.toLowerCase().indexOf(filter) > -1) {
-          items[i].style.display = ""; // Show the item
-          visibleItemsCount++;
+      try {
+        const { timestamp, verified } = JSON.parse(verificationData);
+        const now = Date.now();
+        
+        // Check if session is still valid (within 24 hours)
+        if (verified && (now - timestamp) < SESSION_DURATION) {
+          return true;
         } else {
-          items[i].style.display = "none"; // Hide the item
+          // Session expired, clear it
+          localStorage.removeItem(SESSION_KEY);
+          return false;
         }
+      } catch (e) {
+        return false;
       }
-      
-      // 6. Show or hide the 'no results' message based on the count
-      if (visibleItemsCount === 0) {
-        noResults.style.display = "block";
-      } else {
-        noResults.style.display = "none";
-      }
-    });
-  </script>
+    }
 
+    // Save verification to session
+    function saveVerificationSession() {
+      const verificationData = {
+        verified: true,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(verificationData));
+    }
+
+    // Show verified badge
+    function showVerifiedBadge() {
+      const badge = document.getElementById('verifiedBadge');
+      badge.style.display = 'block';
+    }
+
+    // Hide verified badge
+    function hideVerifiedBadge() {
+      const badge = document.getElementById('verifiedBadge');
+      badge.style.display = 'none';
+    }
+
+    // ==========================================
+    // INITIALIZATION
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if session is already verified
+      if (isSessionVerified()) {
+        showVerifiedBadge();
+      }
+
+      // Add click event listeners to all subject links
+      const subjectLinks = document.querySelectorAll('.subject-link');
+      
+      subjectLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get the Drive URL and subject name
+          targetDriveUrl = this.getAttribute('data-drive-url');
+          const subjectName = this.textContent;
+          
+          // Check if user is already verified
+          if (isSessionVerified()) {
+            // Directly open Google Drive without showing modal
+            window.open(targetDriveUrl, '_blank');
+          } else {
+            // Show verification modal
+            document.getElementById('subjectName').textContent = subjectName;
+            showCaptchaModal();
+          }
+        });
+      });
+
+      // Cancel button handler
+      document.getElementById('cancelBtn').addEventListener('click', function() {
+        closeCaptchaModal();
+      });
+
+      // Proceed button handler
+      document.getElementById('proceedBtn').addEventListener('click', function() {
+        if (captchaVerified && targetDriveUrl) {
+          // Save verification session
+          saveVerificationSession();
+          
+          // Show loading state
+          const btnText = document.getElementById('btnText');
+          btnText.innerHTML = '<span class="loading"></span> Opening...';
+          
+          // Redirect to Google Drive
+          setTimeout(() => {
+            window.open(targetDriveUrl, '_blank');
+            
+            // Close modal and show verified badge
+            closeCaptchaModal();
+            showVerifiedBadge();
+            
+            // Reset button text
+            btnText.textContent = 'Verify & Continue';
+          }, 500);
+        }
+      });
+
+      // Close modal when clicking overlay
+      document.getElementById('captchaOverlay').addEventListener('click', function() {
+        closeCaptchaModal();
+      });
+
+      // Keyboard support (ESC to close modal)
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeCaptchaModal();
+        }
+      });
+    });
+
+    // ==========================================
+    // MODAL FUNCTIONS
+    // ==========================================
+    
+    function showCaptchaModal() {
+      document.getElementById('captchaOverlay').style.display = 'block';
+      document.getElementById('captchaModal').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      
+      // Reset captcha and button state
+      captchaVerified = false;
+      document.getElementById('proceedBtn').disabled = true;
+      
+      // Reset reCAPTCHA if it was previously filled
+      if (typeof grecaptcha !== 'undefined') {
+        grecaptcha.reset();
+      }
+    }
+
+    function closeCaptchaModal() {
+      document.getElementById('captchaOverlay').style.display = 'none';
+      document.getElementById('captchaModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+      
+      // Reset state
+      targetDriveUrl = '';
+      captchaVerified = false;
+      
+      // Reset reCAPTCHA
+      if (typeof grecaptcha !== 'undefined') {
+        grecaptcha.reset();
+      }
+    }
+
+    // ==========================================
+    // RECAPTCHA CALLBACKS
+    // ==========================================
+    
+    function onCaptchaSuccess(token) {
+      captchaVerified = true;
+      const proceedBtn = document.getElementById('proceedBtn');
+      proceedBtn.disabled = false;
+      
+      // Add success animation
+      proceedBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+      document.getElementById('btnText').textContent = '✓ Verified! Click to Continue';
+    }
+
+    function onCaptchaExpired() {
+      captchaVerified = false;
+      const proceedBtn = document.getElementById('proceedBtn');
+      proceedBtn.disabled = true;
+      proceedBtn.style.background = 'linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%)';
+      document.getElementById('btnText').textContent = 'Verify & Continue';
+      
+      // Show alert
+      alert('⚠️ Verification expired. Please verify again.');
+    }
+  </script>
 </body>
 </html>
