@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Civil Engineering Subjects</title>
+  <title>Civil Engineering Subjects - BTechBook.in</title>
   <link rel="stylesheet" href="styles.css" />
   
-  <!-- Google reCAPTCHA Script -->
+  <!-- Google reCAPTCHA v2 Script -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   
   <style>
@@ -37,16 +37,16 @@
     
     ul { padding: 0; list-style: none; }
     
+    /* Entire card is clickable */
     li {
       margin: 12px 0;
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       padding: 16px 20px;
       border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       transition: all 0.3s ease;
       border: 2px solid transparent;
+      cursor: pointer;
+      position: relative;
     }
     
     li:hover {
@@ -55,21 +55,23 @@
       box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
     }
     
+    li:active {
+      transform: translateX(3px) scale(0.98);
+    }
+    
     li:first-child {
       background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
       font-weight: bold;
     }
     
-    li a.subject-link {
-      text-decoration: none;
+    li .subject-name {
       color: #2c3e50;
       font-weight: 500;
-      cursor: pointer;
-      flex-grow: 1;
-      transition: color 0.3s ease;
+      display: block;
+      user-select: none;
     }
     
-    li a.subject-link:hover {
+    li:hover .subject-name {
       color: #667eea;
     }
     
@@ -109,18 +111,12 @@
     }
 
     @keyframes slideInRight {
-      from {
-        transform: translateX(100px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
 
     /* ========================================
-       Enhanced reCAPTCHA Modal Styles
+       reCAPTCHA Modal Styles
        ======================================== */
     #captchaOverlay {
       display: none;
@@ -325,17 +321,9 @@
 
     /* Responsive adjustments */
     @media (max-width: 640px) {
-      body {
-        padding: 10px;
-      }
-
-      .subject-container {
-        padding: 30px 20px;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
+      body { padding: 10px; }
+      .subject-container { padding: 30px 20px; }
+      h1 { font-size: 1.5rem; }
       
       #captchaModal {
         padding: 35px 20px;
@@ -347,21 +335,11 @@
         padding: 25px 15px;
       }
       
-      #captchaModal h2 {
-        font-size: 1.4rem;
-      }
-
-      .modal-subtitle {
-        font-size: 1.1rem !important;
-      }
+      #captchaModal h2 { font-size: 1.4rem; }
+      .modal-subtitle { font-size: 1.1rem !important; }
       
-      .modal-buttons {
-        flex-direction: column;
-      }
-      
-      #proceedBtn, #cancelBtn {
-        width: 100%;
-      }
+      .modal-buttons { flex-direction: column; }
+      #proceedBtn, #cancelBtn { width: 100%; }
 
       .verified-badge {
         top: 10px;
@@ -382,53 +360,53 @@
     <a href="index.html" class="back-link">← Back to Departments</a>
     <h1>Basic Subjects of Civil Engineering</h1>
     <ul>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-0YourCivilEngineeringBooksLinkHere">CIVIL ENGINEERING BOOKS</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_CIVIL_ENGINEERING_BOOKS_FOLDER_LINK">
+        <span class="subject-name">CIVIL ENGINEERING BOOKS</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-1YourEngineeringMechanicsLinkHere">Engineering Mechanics / Applied Mechanics</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_ENGINEERING_MECHANICS_FOLDER_LINK">
+        <span class="subject-name">Engineering Mechanics / Applied Mechanics</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-2YourStrengthOfMaterialsLinkHere">Strength of Materials (Solid Mechanics)</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_STRENGTH_OF_MATERIALS_FOLDER_LINK">
+        <span class="subject-name">Strength of Materials (Solid Mechanics)</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-3YourFluidMechanicsLinkHere">Fluid Mechanics</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_FLUID_MECHANICS_FOLDER_LINK">
+        <span class="subject-name">Fluid Mechanics</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-4YourSurveyingLinkHere">Surveying</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_SURVEYING_FOLDER_LINK">
+        <span class="subject-name">Surveying</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-5YourBuildingMaterialsLinkHere">Building Materials and Construction</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_BUILDING_MATERIALS_CONSTRUCTION_FOLDER_LINK">
+        <span class="subject-name">Building Materials and Construction</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-6YourStructuralAnalysisLinkHere">Structural Analysis</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_STRUCTURAL_ANALYSIS_FOLDER_LINK">
+        <span class="subject-name">Structural Analysis</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-7YourConcreteTechnologyLinkHere">Concrete Technology</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_CONCRETE_TECHNOLOGY_FOLDER_LINK">
+        <span class="subject-name">Concrete Technology</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-8YourGeotechnicalEngineeringLinkHere">Geotechnical Engineering (Soil Mechanics & Foundation Engineering)</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_GEOTECHNICAL_ENGINEERING_FOLDER_LINK">
+        <span class="subject-name">Geotechnical Engineering (Soil Mechanics & Foundation Engineering)</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-9YourTransportationEngineeringLinkHere">Transportation Engineering</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_TRANSPORTATION_ENGINEERING_FOLDER_LINK">
+        <span class="subject-name">Transportation Engineering</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-10YourEnvironmentalEngineeringLinkHere">Environmental Engineering</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_ENVIRONMENTAL_ENGINEERING_FOLDER_LINK">
+        <span class="subject-name">Environmental Engineering</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-11YourWaterResourcesEngineeringLinkHere">Water Resources Engineering (Hydrology & Irrigation)</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_WATER_RESOURCES_ENGINEERING_FOLDER_LINK">
+        <span class="subject-name">Water Resources Engineering (Hydrology & Irrigation)</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-12YourDesignRCStructuresLinkHere">Design of Reinforced Concrete Structures</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_DESIGN_RC_STRUCTURES_FOLDER_LINK">
+        <span class="subject-name">Design of Reinforced Concrete Structures</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-13YourDesignSteelStructuresLinkHere">Design of Steel Structures</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_DESIGN_STEEL_STRUCTURES_FOLDER_LINK">
+        <span class="subject-name">Design of Steel Structures</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-14YourConstructionManagementLinkHere">Construction Management</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_CONSTRUCTION_MANAGEMENT_FOLDER_LINK">
+        <span class="subject-name">Construction Management</span>
       </li>
-      <li>
-        <a href="#" class="subject-link" data-drive-url="https://drive.google.com/drive/folders/1-15YourEstimatingCostingLinkHere">Estimating and Costing</a>
+      <li data-drive-url="https://drive.google.com/drive/folders/YOUR_ESTIMATING_COSTING_FOLDER_LINK">
+        <span class="subject-name">Estimating and Costing</span>
       </li>
     </ul>
   </div>
@@ -445,7 +423,13 @@
     <p>To protect our educational resources and ensure quality access, please verify you're human. This verification is required only once per session.</p>
     
     <div class="captcha-wrapper">
-      <div class="g-recaptcha" data-sitekey="6LdTwCUsAAAAACXNteicLNwQTdwbNfULdq7lE9Lx" data-callback="onCaptchaSuccess" data-expired-callback="onCaptchaExpired"></div>
+      <!-- YOUR RECAPTCHA SITE KEY -->
+      <div class="g-recaptcha" 
+           data-sitekey="6Lf6wSUsAAAAADx3guErFbWix8Rttw1zEmQmDKcl" 
+           data-callback="onCaptchaSuccess" 
+           data-expired-callback="onCaptchaExpired"
+           data-error-callback="onCaptchaError">
+      </div>
     </div>
     
     <div class="modal-buttons">
@@ -466,7 +450,7 @@
     // CONFIGURATION
     // ==========================================
     const SESSION_KEY = 'btechbook_verified';
-    const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
     // Global variables
     let targetDriveUrl = '';
@@ -476,7 +460,6 @@
     // SESSION MANAGEMENT
     // ==========================================
     
-    // Check if user is already verified
     function isSessionVerified() {
       const verificationData = localStorage.getItem(SESSION_KEY);
       if (!verificationData) return false;
@@ -485,11 +468,9 @@
         const { timestamp, verified } = JSON.parse(verificationData);
         const now = Date.now();
         
-        // Check if session is still valid (within 24 hours)
         if (verified && (now - timestamp) < SESSION_DURATION) {
           return true;
         } else {
-          // Session expired, clear it
           localStorage.removeItem(SESSION_KEY);
           return false;
         }
@@ -498,7 +479,6 @@
       }
     }
 
-    // Save verification to session
     function saveVerificationSession() {
       const verificationData = {
         verified: true,
@@ -507,85 +487,59 @@
       localStorage.setItem(SESSION_KEY, JSON.stringify(verificationData));
     }
 
-    // Show verified badge
     function showVerifiedBadge() {
-      const badge = document.getElementById('verifiedBadge');
-      badge.style.display = 'block';
-    }
-
-    // Hide verified badge
-    function hideVerifiedBadge() {
-      const badge = document.getElementById('verifiedBadge');
-      badge.style.display = 'none';
+      document.getElementById('verifiedBadge').style.display = 'block';
     }
 
     // ==========================================
     // INITIALIZATION
     // ==========================================
     document.addEventListener('DOMContentLoaded', function() {
-      // Check if session is already verified
       if (isSessionVerified()) {
         showVerifiedBadge();
       }
 
-      // Add click event listeners to all subject links
-      const subjectLinks = document.querySelectorAll('.subject-link');
+      // Add click event listeners to all list items (entire card clickable)
+      const subjectItems = document.querySelectorAll('ul li');
       
-      subjectLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          
-          // Get the Drive URL and subject name
+      subjectItems.forEach(item => {
+        item.addEventListener('click', function(e) {
           targetDriveUrl = this.getAttribute('data-drive-url');
-          const subjectName = this.textContent;
+          const subjectName = this.querySelector('.subject-name').textContent;
           
-          // Check if user is already verified
           if (isSessionVerified()) {
-            // Directly open Google Drive without showing modal
             window.open(targetDriveUrl, '_blank');
           } else {
-            // Show verification modal
             document.getElementById('subjectName').textContent = subjectName;
             showCaptchaModal();
           }
         });
       });
 
-      // Cancel button handler
       document.getElementById('cancelBtn').addEventListener('click', function() {
         closeCaptchaModal();
       });
 
-      // Proceed button handler
       document.getElementById('proceedBtn').addEventListener('click', function() {
         if (captchaVerified && targetDriveUrl) {
-          // Save verification session
           saveVerificationSession();
           
-          // Show loading state
           const btnText = document.getElementById('btnText');
           btnText.innerHTML = '<span class="loading"></span> Opening...';
           
-          // Redirect to Google Drive
           setTimeout(() => {
             window.open(targetDriveUrl, '_blank');
-            
-            // Close modal and show verified badge
             closeCaptchaModal();
             showVerifiedBadge();
-            
-            // Reset button text
             btnText.textContent = 'Verify & Continue';
           }, 500);
         }
       });
 
-      // Close modal when clicking overlay
       document.getElementById('captchaOverlay').addEventListener('click', function() {
         closeCaptchaModal();
       });
 
-      // Keyboard support (ESC to close modal)
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
           closeCaptchaModal();
@@ -602,11 +556,9 @@
       document.getElementById('captchaModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
       
-      // Reset captcha and button state
       captchaVerified = false;
       document.getElementById('proceedBtn').disabled = true;
       
-      // Reset reCAPTCHA if it was previously filled
       if (typeof grecaptcha !== 'undefined') {
         grecaptcha.reset();
       }
@@ -617,11 +569,9 @@
       document.getElementById('captchaModal').style.display = 'none';
       document.body.style.overflow = 'auto';
       
-      // Reset state
       targetDriveUrl = '';
       captchaVerified = false;
       
-      // Reset reCAPTCHA
       if (typeof grecaptcha !== 'undefined') {
         grecaptcha.reset();
       }
@@ -635,8 +585,6 @@
       captchaVerified = true;
       const proceedBtn = document.getElementById('proceedBtn');
       proceedBtn.disabled = false;
-      
-      // Add success animation
       proceedBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
       document.getElementById('btnText').textContent = '✓ Verified! Click to Continue';
     }
@@ -647,9 +595,12 @@
       proceedBtn.disabled = true;
       proceedBtn.style.background = 'linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%)';
       document.getElementById('btnText').textContent = 'Verify & Continue';
-      
-      // Show alert
       alert('⚠️ Verification expired. Please verify again.');
+    }
+
+    function onCaptchaError() {
+      console.error('reCAPTCHA error occurred');
+      alert('❌ reCAPTCHA error. Please refresh the page and try again.');
     }
   </script>
 </body>
